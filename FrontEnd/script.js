@@ -1,15 +1,19 @@
-//Récup des figures depuis l'API
+//Récup du tableau des travaux (works) depuis l'API grâce à une fonction asynchrone
 async function afficherTravail() {
-    const reponse = await fetch('http://localhost:5678/api/works');
+    const reponse = await fetch('http://localhost:5678/api/works'); // await pour aller avec le async
     const json = await reponse.json();
+
+    //Vérifier que le tableau est bien importé (via la console dans le navigateur)
     console.log(json);
 }
 
+//Appeler la fonction
 afficherTravail();
 
 
 //Cette fonction sert à créer les figures présentes de base dans le HTML
 function creerFigure(works) {
+    //On crée la constante "element" qui est lié aux balises <figure> du HTML
     const element = document.querySelector('figure');
 
     // 1. On importe l'image
@@ -24,10 +28,12 @@ function creerFigure(works) {
 }
 
 
-//Création d'une fonction pour afficher les figures (Image + Texte) sur la page
+//Création d'une fonction pour créer des liens parents-enfants et donc afficher ces éléments
 function afficherFigure(figure) {
     gallery = document.getElementsByClassName(".gallery");
     gallery.appendChild(element);
+    element.appendChild(imageFigure);
+    element.appendChild(texteFigure);
 }
 
 // La fonction comporte une boucle, pour afficher tous les travaux 
