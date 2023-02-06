@@ -1,52 +1,55 @@
 //Récup du tableau des travaux (works) depuis l'API grâce à une fonction asynchrone
-async function afficherTravail() {
+async function recupererTravail() {
     const reponse = await fetch('http://localhost:5678/api/works'); // await pour aller avec le async
     const json = await reponse.json();
-
     //Vérifier que le tableau est bien importé (via la console dans le navigateur)
-    console.log(json);
+    return json;
 }
 
-//Appeler la fonction
-afficherTravail();
+
 
 
 //Cette fonction sert à créer les figures présentes de base dans le HTML
-function creerFigure(works) {
-    //On crée la constante "element" qui est lié aux balises <figure> du HTML
-    const element = document.querySelector('figure');
-
-    // 1. On importe l'image
+function creerFigure(work) {
+    // 1. On crée la constante "element" qui est lié aux balises <figure> du HTML
+    const element = document.createElement('figure');
+    // 2. On crée une balise image
     const imageFigure = document.createElement("img");
-    imageFigure.src = works.imageUrl;
+    imageFigure.setAttribute('crossorigin', 'anonymous');
+    // On va chercher cet élément dans l'API
+    imageFigure.src = work.imageUrl;
 
-    // 2. On importe le texte
+    // 3. On importe le texte
     const texteFigure = document.createElement("figcaption");
-    texteFigure.src = works.title;
+    texteFigure.innerText = work.title;
+
+    element.appendChild(imageFigure);
+    element.appendChild(texteFigure);
 
     return element;
 }
 
-
 //Création d'une fonction pour créer des liens parents-enfants et donc afficher ces éléments
 function afficherFigure(figure) {
-    gallery = document.getElementsByClassName(".gallery");
-    gallery.appendChild(element);
-    element.appendChild(imageFigure);
-    element.appendChild(texteFigure);
+    // Tout ce qui découle de la classe gallery du HTML
+    gallery = document.getElementsByClassName("gallery")[0];
+    // La balise <figure> devient l'enfant de gallery
+    gallery.appendChild(figure);
+
 }
+
+
 
 // La fonction comporte une boucle, pour afficher tous les travaux 
 function chargementEtAffichageTravaux() {
-
-    // 1. Récupération des travaux sur l'API
-    const tableauWork = fetch("http://localhost:5678/api/works");
-
-    // 2. Créer les figure en parcourant le tableau
-    for (i = 0; i < tableauWork.length; i++) {
-        figure = creerFigure(tableauWork[i]);
-        afficherFigure(figure);
-    }
+    recupererTravail().then(json => {
+        // Créer les figure en parcourant le tableau
+        for (let i = 0; i < json.length; i++) {
+            const figure = creerFigure(json[i]);
+            // Afficher les figures une par une
+            afficherFigure(figure);
+        };
+    });
 }
 
 
