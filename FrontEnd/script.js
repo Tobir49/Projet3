@@ -18,7 +18,7 @@ function creerFigure(work) {
     // On va chercher cet élément dans l'API
     imageFigure.src = work.imageUrl;
 
-    // 3. On importe le texte
+    // 3. On crée le texte
     const texteFigure = document.createElement("figcaption");
     // On va chercher cet élément dans l'API
     texteFigure.innerText = work.title;
@@ -59,3 +59,21 @@ chargementEtAffichageTravaux();
 
 
 // Maintenant que les travaux sont affichés via l'API, on fait en sorte de trier les projets par catégorie.
+
+// function trouverCategorie() {
+//     const categorieFigure = document.createElement("bouton");
+//     categorieFigure.src = work.category;
+
+//     return trouverCategorie();
+// };
+
+
+
+const boutonObjet = document.querySelector(".bouton-objets");
+
+
+boutonObjet.addEventListener("click", function() {
+    const objetsFiltres = objets.filter(function(objet) {
+        return category.name == "Objets";
+    });
+});
