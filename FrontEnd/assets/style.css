@@ -183,6 +183,8 @@ nav ul {
     display: flex;
     align-items: center;
     list-style-type: none;
+    font-family: 'Syne';
+    font-weight: 400;
 }
 
 nav li {
@@ -192,6 +194,11 @@ nav li {
 
 li:hover {
     color: #B1663C;
+}
+
+.projet-titre {
+    font-weight: 700;
+    font-size: 15px;
 }
 
 #introduction {

@@ -179,6 +179,8 @@ nav ul {
     display: flex;
     align-items: center;
     list-style-type: none;
+    font-family: 'Syne';
+    font-weight: 400;
 }
 
 nav li {
@@ -240,7 +242,7 @@ input[type="submit"] {
 footer nav ul {
     display: flex;
     justify-content: flex-end;
-    margin: 10em 2em 2em 2em;
+    margin: 7em 2em 2em 2em;
 }
 
 a {
@@ -264,4 +266,15 @@ a:hover {
 
 #mdp-oublie {
     margin: 2em 0em 0em 9.5em;
+}
+
+#login {
+    width: 50%;
+    cursor: pointer;
+}
+
+.login-titre {
+    font-family: 'Syne';
+    font-weight: 700;
+    font-size: 15px;
 }

@@ -51,7 +51,7 @@ function chargementEtAffichageTravaux() {
             afficherFigure(figure);
         };
     });
-}
+};
 
 
 //On appelle la fonction
@@ -60,20 +60,16 @@ chargementEtAffichageTravaux();
 
 // Maintenant que les travaux sont affichés via l'API, on fait en sorte de trier les projets par catégorie.
 
-// function trouverCategorie() {
-//     const categorieFigure = document.createElement("bouton");
-//     categorieFigure.src = work.category;
+const categorie = async function recupererCategorie() {
+    const api = await fetch('http://localhost:5678/api/works');
+    const categorieJson = await api.json();
+    return categorieJson;
+};
 
-//     return trouverCategorie();
-// };
-
-
-
-const boutonObjet = document.querySelector(".bouton-objets");
-
-
-boutonObjet.addEventListener("click", function() {
-    const objetsFiltres = objets.filter(function(objet) {
-        return category.name == "Objets";
-    });
+const filtreObjet = categorie.filter(function(categorieObjet) {
+    for (let i = 0; i < categorieObjet.category.length; i++) {
+        if (categorieObjet.category[i] === 'Objets') {
+            return categorieObjet;
+        }
+    }
 });
