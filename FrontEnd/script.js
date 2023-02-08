@@ -60,16 +60,15 @@ chargementEtAffichageTravaux();
 
 // Maintenant que les travaux sont affichés via l'API, on fait en sorte de trier les projets par catégorie.
 
-const categorie = async function recupererCategorie() {
-    const api = await fetch('http://localhost:5678/api/works');
-    const categorieJson = await api.json();
-    return categorieJson;
+//Fonction pour récupérer les catégories et en faire un nouveau tableau
+
+function recupererCategories() {
+    recupererTravail().then(json => {
+        const categorieObjet = json.map(work => work.category);
+        console.log(categorieObjet);
+    });
 };
 
-const filtreObjet = categorie.filter(function(categorieObjet) {
-    for (let i = 0; i < categorieObjet.category.length; i++) {
-        if (categorieObjet.category[i] === 'Objets') {
-            return categorieObjet;
-        }
-    }
-});
+recupererCategories();
+
+//Écrire une fonction pour afficher les projets qui sont des objets
