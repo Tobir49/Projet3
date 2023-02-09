@@ -72,3 +72,36 @@ function recupererCategories() {
 recupererCategories();
 
 //Écrire une fonction pour afficher les projets qui sont des objets
+
+//Création de la constante qui englobera le bouton pour afficher les objets
+const boutonObjets = document.querySelector("bouton-objets");
+
+function parentObjet(boutonObjets) {
+    bouttons = document.getElementsByClassName("bouttons")[0];
+    bouttons.appendChild(boutonObjets);
+};
+
+console.log(boutonObjets);
+
+// Vérifier si l'élément n'est plus null avant d'ajouter  addEventListener()
+
+boutonObjets ? .addEventListener('click', () => {
+    alert('La bouton est fonctionnel');
+});
+
+
+//Ajout d'un addEventListener
+boutonObjets.addEventListener("click", recupererCategories().then(json => {
+    //La boucle permet d'afficher des figures si les projets sont des objets
+    for (let i = 0; i === "Objets"; i++) {
+        const figure = creerFigure(json[i]);
+        afficherFigure(figure);
+    };
+}));
+
+//On fait la même chose pour les autres catégories
+
+
+
+
+//Fonction pour afficher toutes les catégories :
