@@ -236,7 +236,7 @@ li:hover {
 
 /*Ajout des buttons pour filtrer*/
 
-#bouttons {
+#div-boutons {
     display: flex;
     justify-content: center;
     margin: 2em 1em 4em 1em;

@@ -2,17 +2,17 @@
 
 document.addEventListener('DOMContentLoaded', principale);
 
-//Fonction qui englobe tout 
 
+//Fonction qui englobe tout le code
 function principale() {
+
+
     //Récup du tableau des travaux depuis l'API grâce à une fonction asynchrone
     async function recupererTravail() {
         const reponse = await fetch('http://localhost:5678/api/works');
         const json = await reponse.json();
         return json;
     };
-
-
 
 
     //Cette fonction sert à créer les figures présentes de base dans le HTML
@@ -36,6 +36,7 @@ function principale() {
         return element;
     };
 
+
     //Création d'une fonction pour créer le parent des éléments de la fonction creerFigure
     function afficherFigure(figure) {
         // Tout ce qui découle de la classe gallery du HTML
@@ -46,9 +47,9 @@ function principale() {
     };
 
 
-
     // La fonction comporte une boucle, pour afficher tous les travaux 
     function chargementEtAffichageTravaux() {
+        //On crée une constante gallery avec innerHTML pour vider la balise puis la recréer
         document.getElementsByClassName("gallery")[0].innerHTML = "";
         recupererTravail().then(json => {
             // Créer les figure en parcourant le tableau
@@ -60,152 +61,80 @@ function principale() {
         });
     };
 
-
-
     //On appelle la fonction
     chargementEtAffichageTravaux();
 
 
-    // Maintenant que les travaux sont affichés via l'API, on fait en sorte de trier les projets par catégorie.
 
-    //Fonction pour récupérer les catégories et en faire un nouveau tableau
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /* function recupererCategories() {
-        recupererTravail().then(json => {
-            const categorieObjet = json.map(work => work.category);
-            console.log(categorieObjet);
-        });
-    };
 
-    recupererCategories(); */
+
+    // Maintenant que les travaux sont affichés via l'API, on fait en sorte de filtrer les projets par catégorie.
+    // Pour cela on doit d'abord :
+
+    // 1. Appel pour récup les catégories
 
     async function recupererCategories() {
         const reponse = await fetch('http://localhost:5678/api/categories');
         const json = await reponse.json();
         console.log(json);
-        return json;
+        return json; // Ici on a un tableau avec 3 catégories : "Objets" / "Appartements" / "Hôtels & restaurants"
     };
 
-
-    //Création de la constante qui englobera le bouton pour afficher les objets
-    const boutonObjets = document.querySelector(".bouton-objets");
-
-    /*function parentObjet(boutonObjets) {
-        bouttons = document.getElementsByClassName("bouttons")[0];
-        bouttons.appendChild(boutonObjets);
-    };
-
-    console.log(boutonObjets);
-
-
-     // Vérifier si l'élément n'est plus null avant d'ajouter addEventListener()
-
-     boutonObjets.addEventListener('click', () => {
-         alert('La bouton est fonctionnel');
-     });
-
-
-     boutonObjets.addEventListener("click", function() {
-        recupererCategories().then(json => {
-            //La boucle permet d'afficher des figures si les projets sont des objets
-            for (let i = 0; i === "Objets"; i++) {
-                const figure = creerFigure(json[i]);
-                afficherFigure(figure);
-            };
-        });
-        return json.filter();
-    }); */
-
-
-    // 1. Récupérer les données des catégories
     recupererCategories();
-    // 2. Ajouter un addEventListener
-    boutonObjets.addEventListener("click", recupererCategories().then(json => {
-        // 3. Faire une boucle qui parcours le tableau des catégories
-        for (let i = 0; i < json.length; i++) {
-            let travail = json[i];
-            // 4. Pour chaque boucle avec une catégorie : afficher les figures (innerHTML ?)
-            if (travail.name === "Objets") {
-                afficherFigure(creerFigure(travail));
-            }
-        }
-    }));
-    // 5. Ajouter une fonction globale (all) 
 
-    function afficherProjetsFiltres(categoryId) {
-        for (let i = 0; i < json.length; i++) {
-            if (category.name === ["Objets", "Appartements", "Hotels & restaurants"]) {
-                const tousProjets = document.querySelectorAll(".bouton-tous");
-                tousProjets.addEventListener("click", chargementEtAffichageTravaux())
-            }
-            elif(category.name === "Objets")
-                /*Afficher Objets
-                const objetsFiltres = work.filter(function(){
-                    return 
-                }) */
-
-            elif(category.name === "Appartements")
-                //Afficher Appartements
-
-            elif(category.name === "Hotels & restaurants")
-                //Afficher Hotels & restaurants
-        }
-
-    };
-
-    afficherProjetsFiltres(1);
-}
-
-
-// 1. Appel pour récup les catégories
-// Ici on a un tableau avec 3 catégories
-
-/*fonction ici
-
-func creerBouton(id, name) {
-        baliseHtml = createElement("button");
-        baliseHtml.innerText = name
-        baliseHTML.class = "bouton-unique"
-        baliseHtml.onclick = chargementetaffichagetravauxfiltres(id)
-
-
-        /* function chargementEtAffichageTravaux() {
-        recupererTravail().then(json => {
-            for (let i = 0; i < json.length; i++) {
-                const figure = creerFigure(json[i]);
+    // Chargement et affichage travaux filtrés (appelé dans le "onclick" de la fonction creerBouton())
+    function chargementEtAffichageTravauxFiltres(id) {
+        // L'id dans les () permet, lorsqu'on passera l'élément 0, d'afficher tous les projets
+        // Ainsi, avec un autre élément entre () pour l'id comme (3), seulement les projets avec id=3 seront affichés
+        document.getElementsByClassName("gallery")[0].innerHTML = "";
+        recupererTravail().then(travaux => {
+            // On applique un .filter() et un || pour que :
+            // 1. Si l'id = 0 (donc à tous les éléments) tous les projets se chargent
+            // 2. Sinon, si l'id = à un autre que 0, alors n'afficher que ceux-là
+            let travauxFiltres = travaux.filter(element => id === 0 || element.categoryId === id); // Le categoryId = category{id} dans l'API
+            for (let i = 0; i < travauxFiltres.length; i++) {
+                const figure = creerFigure(travauxFiltres[i]);
                 afficherFigure(figure);
             };
         });
     };
-}
 
-// 2. Affichage des filtres
-    recupCategories().then(json => {
+    // Cette fonction permet de créer les balises <button> comme on a créé plus haut les <figure>
+    function creerBouton(id, name) {
+        const creerLeBouton = document.createElement("button"); // Création de la balise <bouton>
+        creerLeBouton.innerText = name; // Ajout d'un nom
+        creerLeBouton.classList.add("bouton-unique"); // AJout d'une classe pour le style dans le CSS
+        creerLeBouton.onclick = chargementEtAffichageTravauxFiltres(id); // Équivalent du addEventListener
+    };
+
+    function parentBoutons(button) {
+        divBoutons = document.getElementsByClassName("div-boutons")[0];
+        divBoutons.appendChild(button);
+    };
+
+    creerBouton(1, "Objets");
+
+    // 2. Affichage des filtres
+    recupererCategories().then(json => {
         // 2.A Rajouter une catégorie "Tous" dans le tableau
         listeCategories = json;
-        listeCategories.unshift({id: 0, name: "Tous"});
+        listeCategories.unshift({ id: 0, name: "Tous" });
 
         //Pour chacune des catégories:
-        for(...)
-        {
+        for (let i = 0; i < json.length; i++) {
             // 2.B Créer des balises
-            let boutonFiltre = creerBouton(id, name) // creerBouton renvoi une balise html pour le bouton
+            let boutonFiltre = creerBouton(id, name) // creerBouton renvoie une balise HTML pour le bouton
 
             // 2.C Afficher les balises
 
             afficherBoutonFiltre(boutonFiltre);
-        }
-    })*/
-
-// Chargement et affichage travaux filtrés (appelé dans le "onclick")
-function chargementEtAffichageTravauxFiltres(id) {
-    document.getElementsByClassName("gallery")[0].innerHTML = "";
-    recupererTravail().then(travaux => {
-        let travauxFiltres = travaux.filter(element => id === 0 || element.categoryId === id);
-        for (let i = 0; i < travauxFiltres.length; i++) {
-            const figure = creerFigure(travauxFiltres[i]);
-            afficherFigure(figure);
         };
     });
 
-};
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+}
