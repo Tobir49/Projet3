@@ -24,7 +24,6 @@ function principale() {
         imageFigure.setAttribute('crossorigin', 'anonymous');
         // On va chercher cet élément dans l'API
         imageFigure.src = work.imageUrl;
-
         // 3. On crée le texte
         const texteFigure = document.createElement("figcaption");
         // On va chercher cet élément dans l'API
@@ -50,6 +49,7 @@ function principale() {
 
     // La fonction comporte une boucle, pour afficher tous les travaux 
     function chargementEtAffichageTravaux() {
+        document.getElementsByClassName("gallery")[0].innerHTML = "";
         recupererTravail().then(json => {
             // Créer les figure en parcourant le tableau
             for (let i = 0; i < json.length; i++) {
@@ -59,6 +59,7 @@ function principale() {
             };
         });
     };
+
 
 
     //On appelle la fonction
@@ -77,6 +78,7 @@ function principale() {
     };
 
     recupererCategories(); */
+
     async function recupererCategories() {
         const reponse = await fetch('http://localhost:5678/api/categories');
         const json = await reponse.json();
@@ -84,29 +86,26 @@ function principale() {
         return json;
     };
 
-    recupererCategories();
-
-    //Écrire une fonction pour afficher les projets qui sont des objets
 
     //Création de la constante qui englobera le bouton pour afficher les objets
     const boutonObjets = document.querySelector(".bouton-objets");
 
-    function parentObjet(boutonObjets) {
+    /*function parentObjet(boutonObjets) {
         bouttons = document.getElementsByClassName("bouttons")[0];
         bouttons.appendChild(boutonObjets);
     };
 
     console.log(boutonObjets);
 
-    /* // Vérifier si l'élément n'est plus null avant d'ajouter  addEventListener()
+
+     // Vérifier si l'élément n'est plus null avant d'ajouter addEventListener()
 
      boutonObjets.addEventListener('click', () => {
          alert('La bouton est fonctionnel');
-     }); */
+     });
 
 
-    //Ajout d'un addEventListener
-    /* boutonObjets.addEventListener("click", function() {
+     boutonObjets.addEventListener("click", function() {
         recupererCategories().then(json => {
             //La boucle permet d'afficher des figures si les projets sont des objets
             for (let i = 0; i === "Objets"; i++) {
@@ -117,20 +116,96 @@ function principale() {
         return json.filter();
     }); */
 
+
+    // 1. Récupérer les données des catégories
+    recupererCategories();
+    // 2. Ajouter un addEventListener
     boutonObjets.addEventListener("click", recupererCategories().then(json => {
+        // 3. Faire une boucle qui parcours le tableau des catégories
         for (let i = 0; i < json.length; i++) {
             let travail = json[i];
+            // 4. Pour chaque boucle avec une catégorie : afficher les figures (innerHTML ?)
             if (travail.name === "Objets") {
-                afficherFigure.creerFigure(travail);
+                afficherFigure(creerFigure(travail));
             }
         }
     }));
+    // 5. Ajouter une fonction globale (all) 
 
-    //On fait la même chose pour les autres catégories
+    function afficherProjetsFiltres(categoryId) {
+        for (let i = 0; i < json.length; i++) {
+            if (category.name === ["Objets", "Appartements", "Hotels & restaurants"]) {
+                const tousProjets = document.querySelectorAll(".bouton-tous");
+                tousProjets.addEventListener("click", chargementEtAffichageTravaux())
+            }
+            elif(category.name === "Objets")
+                /*Afficher Objets
+                const objetsFiltres = work.filter(function(){
+                    return 
+                }) */
 
+            elif(category.name === "Appartements")
+                //Afficher Appartements
 
+            elif(category.name === "Hotels & restaurants")
+                //Afficher Hotels & restaurants
+        }
 
+    };
 
-    //Fonction pour afficher toutes les catégories :
-    document.querySelector(".bouton-tous");
+    afficherProjetsFiltres(1);
 }
+
+
+// 1. Appel pour récup les catégories
+// Ici on a un tableau avec 3 catégories
+
+/*fonction ici
+
+func creerBouton(id, name) {
+        baliseHtml = createElement("button");
+        baliseHtml.innerText = name
+        baliseHTML.class = "bouton-unique"
+        baliseHtml.onclick = chargementetaffichagetravauxfiltres(id)
+
+
+        /* function chargementEtAffichageTravaux() {
+        recupererTravail().then(json => {
+            for (let i = 0; i < json.length; i++) {
+                const figure = creerFigure(json[i]);
+                afficherFigure(figure);
+            };
+        });
+    };
+}
+
+// 2. Affichage des filtres
+    recupCategories().then(json => {
+        // 2.A Rajouter une catégorie "Tous" dans le tableau
+        listeCategories = json;
+        listeCategories.unshift({id: 0, name: "Tous"});
+
+        //Pour chacune des catégories:
+        for(...)
+        {
+            // 2.B Créer des balises
+            let boutonFiltre = creerBouton(id, name) // creerBouton renvoi une balise html pour le bouton
+
+            // 2.C Afficher les balises
+
+            afficherBoutonFiltre(boutonFiltre);
+        }
+    })*/
+
+// Chargement et affichage travaux filtrés (appelé dans le "onclick")
+function chargementEtAffichageTravauxFiltres(id) {
+    document.getElementsByClassName("gallery")[0].innerHTML = "";
+    recupererTravail().then(travaux => {
+        let travauxFiltres = travaux.filter(element => id === 0 || element.categoryId === id);
+        for (let i = 0; i < travauxFiltres.length; i++) {
+            const figure = creerFigure(travauxFiltres[i]);
+            afficherFigure(figure);
+        };
+    });
+
+};
