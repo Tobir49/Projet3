@@ -106,15 +106,16 @@ function principale() {
         const creerLeBouton = document.createElement("button"); // Création de la balise <bouton>
         creerLeBouton.innerText = name; // Ajout d'un nom
         creerLeBouton.classList.add("bouton-unique"); // AJout d'une classe pour le style dans le CSS
-        creerLeBouton.onclick = chargementEtAffichageTravauxFiltres(id); // Équivalent du addEventListener
-    };
-
-    function parentBoutons(button) {
+        creerLeBouton.addEventListener("click", chargementEtAffichageTravauxFiltres(id)); // Équivalent du addEventListener : creerLeBouton.onclick = fonction(id);
+        // Lier la balise à un parent
         divBoutons = document.getElementsByClassName("div-boutons")[0];
-        divBoutons.appendChild(button);
+        divBoutons.appendChild(creerLeBouton);
     };
 
-    creerBouton(1, "Objets");
+
+    /*const filtreObjet = creerBouton(1, "Objets");
+    console.log(filtreObjet);*/
+
 
     // 2. Affichage des filtres
     recupererCategories().then(json => {
@@ -125,7 +126,8 @@ function principale() {
         //Pour chacune des catégories:
         for (let i = 0; i < json.length; i++) {
             // 2.B Créer des balises
-            let boutonFiltre = creerBouton(id, name) // creerBouton renvoie une balise HTML pour le bouton
+            // creerBouton renvoie une balise HTML pour le bouton
+            let boutonFiltre = creerBouton(id, name); // En changeant id et name par ce que l'on souhaite : affichage de seulement ceux-ci et pas les autres
 
             // 2.C Afficher les balises
 
