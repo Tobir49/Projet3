@@ -1,23 +1,48 @@
+//\\\\\\\\\\\\\\\\\Afficher les projets/////////////////////\\
+
 const apiWork = "http://localhost:5678/api/works";
 
 
-// Application bouton
-filterSelection("all")
+async function fetchWork() {
+    const response = await fetch(apiWork);
+    const json = await response.json();
+
+    json.forEach(data => {
+        const sectionProjets = document.querySelector(".gallery");
+        const baliseFigure = document.createElement("figure");
+        baliseFigure.classList.add("filterDiv", data.categoryId, "show");
+        const imageFigure = document.createElement("img");
+        imageFigure.src = data.imageUrl;
+        imageFigure.setAttribute("crossorigin", 'anonymous');
+        const texteFigure = document.createElement("figcaption");
+        texteFigure.innerText = data.title;
+        baliseFigure.appendChild(imageFigure);
+        baliseFigure.appendChild(texteFigure);
+        sectionProjets.appendChild(baliseFigure);
+    })
+};
+
+fetchWork();
+
+
+//\\\\\\\\\\\\\\\\\Ajouter les boutons filtrer/////////////////////\\
+
+filterSelection("all");
 
 function filterSelection(c) {
-    var x, i;
+    let x, i;
     x = document.getElementsByClassName("filterDiv");
     if (c == "all") c = "";
-    // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
+    // Ajoute la classe "show" aux éléments filtrés, et l'enlève à ceux non sélectionnés
     for (i = 0; i < x.length; i++) {
         w3RemoveClass(x[i], "show");
         if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
     }
-}
+};
 
-// Show filtered elements
+// Afficher les éléments filtrés
 function w3AddClass(element, name) {
-    var i, arr1, arr2;
+    let i, arr1, arr2;
     arr1 = element.className.split(" ");
     arr2 = name.split(" ");
     for (i = 0; i < arr2.length; i++) {
@@ -25,11 +50,11 @@ function w3AddClass(element, name) {
             element.className += " " + arr2[i];
         }
     }
-}
+};
 
-// Hide elements that are not selected
+// Cacher les éléments non filtrés
 function w3RemoveClass(element, name) {
-    var i, arr1, arr2;
+    let i, arr1, arr2;
     arr1 = element.className.split(" ");
     arr2 = name.split(" ");
     for (i = 0; i < arr2.length; i++) {
@@ -38,39 +63,16 @@ function w3RemoveClass(element, name) {
         }
     }
     element.className = arr1.join(" ");
-}
+};
 
-// Add active class to the current control button (highlight it)
-var btnContainer = document.getElementById("btnFilters");
-var btns = btnContainer.getElementsByClassName("btn");
+// Ajouter la classe "show" au bouton actif
+let btnContainer = document.getElementById("btnFilters");
+let btns = btnContainer.getElementsByClassName("btn");
 console.log(btns);
-for (var i = 0; i < btns.length; i++) {
+for (let i = 0; i < btns.length; i++) {
     btns[i].addEventListener("click", function() {
-        var current = document.getElementsByClassName("active");
+        let current = document.getElementsByClassName("active");
         current[0].className = current[0].className.replace(" active", "");
         this.className += " active";
     });
-}
-
-//appel fetch pour le portfolio
-async function fetchWork() {
-    const response = await fetch(apiWork);
-    const json = await response.json();
-    console.log(json);
-
-    json.forEach(data => {
-        const sectionWorks = document.querySelector(".gallery");
-        const figureElement = document.createElement("figure");
-        figureElement.classList.add("filterDiv", data.categoryId, "show");
-        const imageElement = document.createElement("img");
-        imageElement.src = data.imageUrl;
-        imageElement.crossOrigin = "anonymous";
-        const nomElement = document.createElement("figcaption");
-        nomElement.innerText = data.title;
-        figureElement.appendChild(imageElement);
-        figureElement.appendChild(nomElement);
-        sectionWorks.appendChild(figureElement);
-    })
 };
-
-fetchWork();
