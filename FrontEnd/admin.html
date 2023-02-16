@@ -16,33 +16,37 @@
 
 <body>
     <header>
-        <nav>
-            <div>
-                <ul>
-                    <li><i class="fa-regular fa-pen-to-square"></i></li>
-                    <li>Mode édition</li>
-                </ul>
-                <div>
-                    <a href="">
-                        <p>publier les changement</p>
-                    </a>
-                </div>
+        <div id="edit-header">
+            <ul id="ul-header">
+                <li><i class="fa-regular fa-pen-to-square font-white"></i></li>
+                <li class="font-white padding-ul">Mode édition</li>
+            </ul>
+            <div id="background-edit">
+                <p>publier les changement</p>
             </div>
-        </nav>
+    </header>
+    <aside id="ancien-header">
+        </div>
         <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
         <nav>
             <ul>
                 <li><a href="index.html" class="projet-titre">projets</a></li>
                 <li><a href="#contact">contact</a></li>
-                <li><a href="login.html">login</a></li>
+                <li><a href="">logout</a></li>
                 <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
             </ul>
         </nav>
-    </header>
+    </aside>
     <main>
         <section id="introduction">
             <figure>
                 <img src="./assets/images/sophie-bluel.png" alt="">
+                <a href="">
+                    <ul id="edit-image">
+                        <li><i class="fa-regular fa-pen-to-square"></i></li>
+                        <li class="padding-ul">modifier</li>
+                    </ul>
+                </a>
             </figure>
             <article>
                 <h2>Designer d'espace</h2>
@@ -52,24 +56,18 @@
                 <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
             </article>
         </section>
-        <aside>
-            <a href="">
-                <ul>
-                    <li><i class="fa-regular fa-pen-to-square"></i></li>
-                    <li>modifier</li>
-                </ul>
-            </a>
-        </aside>
         <section id="portfolio">
-            <h2>Mes Projets</h2>
-            <aside>
-                <a href="">
-                    <ul>
-                        <li><i class="fa-regular fa-pen-to-square"></i></li>
-                        <li>modifier</li>
-                    </ul>
-                </a>
-            </aside>
+            <div id="portfolio-title">
+                <h2>Mes Projets</h2>
+                <aside id="aside-portfolio">
+                    <a href="">
+                        <ul id="edit-portfolio">
+                            <li><i class="fa-regular fa-pen-to-square"></i></li>
+                            <li class="padding-ul">modifier</li>
+                        </ul>
+                    </a>
+                </aside>
+            </div>
             <div class="gallery"></div>
         </section>
         <section id="contact">

@@ -146,12 +146,6 @@ body {
     font-size: 14px;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    margin: 50px 0
-}
-
 section {
     margin: 50px 0
 }
@@ -224,9 +218,8 @@ nav li {
     margin-bottom: 0.5em;
 }
 
-#portfolio h2 {
-    text-align: center;
-    margin-bottom: 1em;
+#portfolio {
+    margin-bottom: 3em;
 }
 
 .gallery {
@@ -309,3 +302,59 @@ a:hover {
 
 
 /* CSS admin */
+
+header {
+    background-color: black;
+}
+
+#edit-header {
+    display: flex;
+    justify-content: center;
+    padding: 0.4em;
+}
+
+#ul-header {
+    display: flex;
+    margin: 0em 1em 0em 0em;
+    padding: 0.7em;
+}
+
+.padding-ul {
+    margin-left: 0.5em;
+}
+
+.font-white {
+    color: white;
+}
+
+#background-edit {
+    cursor: pointer;
+    background-color: white;
+    padding: 0.7em;
+    border-radius: 1em;
+}
+
+#ancien-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+#portfolio-title {
+    display: flex;
+    justify-content: center;
+    margin: 10em 0em 7em 0em;
+}
+
+#edit-image {
+    display: flex;
+    margin: 1em 0em 0em 4em;
+}
+
+#aside-portfolio {
+    margin: 0.6em 0em 0em 2em;
+}
+
+#edit-portfolio {
+    display: flex;
+}
