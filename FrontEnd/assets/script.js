@@ -2,15 +2,16 @@
 
 const apiWork = "http://localhost:5678/api/works";
 
+// Récupération des données de l'API
 
-async function fetchWork() {
+async function afficherTravaux() {
     const response = await fetch(apiWork);
     const json = await response.json();
 
-    json.forEach(data => {
+    json.forEach(data => { //Une boucle qui parcours tous les travaux tant qu'il y en a dans l'API
         const sectionProjets = document.querySelector(".gallery");
         const baliseFigure = document.createElement("figure");
-        baliseFigure.classList.add("filterDiv", data.categoryId, "show");
+        baliseFigure.classList.add("filterDiv", data.categoryId, "show"); // Une classe "cachée" qui servira pour les filtres
         const imageFigure = document.createElement("img");
         imageFigure.src = data.imageUrl;
         imageFigure.setAttribute("crossorigin", 'anonymous');
@@ -22,7 +23,7 @@ async function fetchWork() {
     })
 };
 
-fetchWork();
+afficherTravaux();
 
 
 //\\\\\\\\\\\\\\\\\Ajouter les boutons filtrer/////////////////////\\
@@ -35,13 +36,13 @@ function filterSelection(c) {
     if (c == "all") c = "";
     // Ajoute la classe "show" aux éléments filtrés, et l'enlève à ceux non sélectionnés
     for (i = 0; i < x.length; i++) {
-        w3RemoveClass(x[i], "show");
-        if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+        enleverClasseShow(x[i], "show");
+        if (x[i].className.indexOf(c) > -1) ajouterClasseShow(x[i], "show");
     }
 };
 
 // Afficher les éléments filtrés
-function w3AddClass(element, name) {
+function ajouterClasseShow(element, name) {
     let i, arr1, arr2;
     arr1 = element.className.split(" ");
     arr2 = name.split(" ");
@@ -53,7 +54,7 @@ function w3AddClass(element, name) {
 };
 
 // Cacher les éléments non filtrés
-function w3RemoveClass(element, name) {
+function enleverClasseShow(element, name) {
     let i, arr1, arr2;
     arr1 = element.className.split(" ");
     arr2 = name.split(" ");
@@ -76,3 +77,6 @@ for (let i = 0; i < btns.length; i++) {
         this.className += " active";
     });
 };
+
+
+//\\\\\\\\\\\\\\\\\Se connecter/////////////////////\\
