@@ -80,3 +80,12 @@ for (let i = 0; i < btns.length; i++) {
 
 
 //\\\\\\\\\\\\\\\\\Se connecter/////////////////////\\
+
+function check(form) {
+    if (form.email.value == "sophie.bluel@test.tld" && form.password.value == "S0phie") {
+        return true;
+    } else {
+        alert("Erreur dans l’identifiant ou le mot de passe")
+        return false;
+    }
+}
