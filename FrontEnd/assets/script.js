@@ -30,62 +30,52 @@ afficherTravaux();
 
 filterSelection("all");
 
-function filterSelection(c) {
-    let x, i;
-    x = document.getElementsByClassName("filterDiv");
-    if (c == "all") c = "";
+function filterSelection(classes) {
+    let ensembleDesClasses, i;
+    ensembleDesClasses = document.getElementsByClassName("filterDiv");
+    if (classes == "all") classes = "";
     // Ajoute la classe "show" aux éléments filtrés, et l'enlève à ceux non sélectionnés
-    for (i = 0; i < x.length; i++) {
-        enleverClasseShow(x[i], "show");
-        if (x[i].className.indexOf(c) > -1) ajouterClasseShow(x[i], "show");
+    for (i = 0; i < ensembleDesClasses.length; i++) {
+        enleverClasseShow(ensembleDesClasses[i], "show");
+        if (ensembleDesClasses[i].className.indexOf(classes) > -1) {
+            ajouterClasseShow(ensembleDesClasses[i], "show")
+        }
     }
 };
 
 // Afficher les éléments filtrés
 function ajouterClasseShow(element, name) {
-    let i, arr1, arr2;
-    arr1 = element.className.split(" ");
-    arr2 = name.split(" ");
-    for (i = 0; i < arr2.length; i++) {
-        if (arr1.indexOf(arr2[i]) == -1) {
-            element.className += " " + arr2[i];
+    let i, tableauUn, tableauDeux;
+    tableauUn = element.className.split(" ");
+    tableauDeux = name.split(" ");
+    for (i = 0; i < tableauDeux.length; i++) {
+        if (tableauUn.indexOf(tableauDeux[i]) == -1) {
+            element.className += " " + tableauDeux[i];
         }
     }
 };
 
 // Cacher les éléments non filtrés
 function enleverClasseShow(element, name) {
-    let i, arr1, arr2;
-    arr1 = element.className.split(" ");
-    arr2 = name.split(" ");
-    for (i = 0; i < arr2.length; i++) {
-        while (arr1.indexOf(arr2[i]) > -1) {
-            arr1.splice(arr1.indexOf(arr2[i]), 1);
+    let i, tableauUn, tableauDeux;
+    tableauUn = element.className.split(" ");
+    tableauDeux = name.split(" ");
+    for (i = 0; i < tableauDeux.length; i++) {
+        while (tableauUn.indexOf(tableauDeux[i]) > -1) {
+            tableauUn.splice(tableauUn.indexOf(tableauDeux[i]), 1);
         }
     }
-    element.className = arr1.join(" ");
+    element.className = tableauUn.join(" ");
 };
 
 // Ajouter la classe "show" au bouton actif
-let btnContainer = document.getElementById("btnFilters");
-let btns = btnContainer.getElementsByClassName("btn");
-console.log(btns);
-for (let i = 0; i < btns.length; i++) {
-    btns[i].addEventListener("click", function() {
-        let current = document.getElementsByClassName("active");
-        current[0].className = current[0].className.replace(" active", "");
+let bouton = document.getElementById("btnFilters");
+let ensembleBoutons = bouton.getElementsByClassName("btn");
+console.log(ensembleBoutons);
+for (let i = 0; i < ensembleBoutons.length; i++) {
+    ensembleBoutons[i].addEventListener("click", function() {
+        let boutonActuel = document.getElementsByClassName("active");
+        boutonActuel[0].className = boutonActuel[0].className.replace(" active", "");
         this.className += " active";
     });
 };
-
-
-//\\\\\\\\\\\\\\\\\Se connecter/////////////////////\\
-
-function check(form) {
-    if (form.email.value == "sophie.bluel@test.tld" && form.password.value == "S0phie") {
-        return true;
-    } else {
-        alert("Erreur dans l’identifiant ou le mot de passe")
-        return false;
-    }
-}
