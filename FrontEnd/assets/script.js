@@ -71,7 +71,7 @@ function enleverClasseShow(element, name) {
 // Ajouter la classe "show" au bouton actif
 let bouton = document.getElementById("btnFilters");
 let ensembleBoutons = bouton.getElementsByClassName("btn");
-console.log(ensembleBoutons);
+// console.log(ensembleBoutons);
 for (let i = 0; i < ensembleBoutons.length; i++) {
     ensembleBoutons[i].addEventListener("click", function() {
         let boutonActuel = document.getElementsByClassName("active");

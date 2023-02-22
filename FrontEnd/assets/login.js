@@ -12,11 +12,11 @@ function connexionReussie() {
 2. Générer un message d'erreur si la connexion échoue*/
 
 function connexionEchouee() {
-    const erreur = document.querySelector(".erreur");
+    const divErreur = document.querySelector(".erreur");
     document.querySelector(".erreur").innerHTML = "";
     const afficherErreur = document.createElement("p");
     afficherErreur.innerText = "Erreur dans l’identifiant ou le mot de passe";
-    erreur.appendChild(afficherErreur);
+    divErreur.appendChild(afficherErreur);
 }
 
 /* Une fois ces fonctions créées :
