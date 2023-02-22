@@ -28,14 +28,15 @@
 
     <section id="contact">
         <h2>Login</h2>
-        <form action="#">
-            <label for="email">E-mail</label>
+        <form class="formulaire-connexion" method="post">
+            <label>E-mail</label>
             <input type="email" name="email" id="email">
-            <label for="password">Mot de passe</label>
+            <label>Mot de passe</label>
             <input type="password" name="password" id="password">
             <input type="submit" value="Se connecter" id="login">
-            <a href="#" id="mdp-oublie">Mot de passe oublié</a>
         </form>
+        <a href="#" id="mdp-oublie">Mot de passe oublié</a>
+        <div class="erreur"></div>
     </section>
 
     <footer>
