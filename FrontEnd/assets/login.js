@@ -19,34 +19,27 @@ function connexionEchouee() {
     erreur.appendChild(afficherErreur);
 }
 
-/* Une fois ces fonctions crées :
+/* Une fois ces fonctions créées :
 3. Fonction qui permet de se connecter (utilisation des fonctions précédentes)*/
 
+async function fonctionConnexion() {
+    const formulaire = document.querySelector(".formulaire-connexion");
+    console.log(formulaire);
 
+    // Accès aux inputs du <form> dans le HTML grâce à getElementById
+    const emailFormulaire = document.getElementById("email").value; // Le .value sert à récupérer la valeur écrite dans cet input
+    const passwordFormulaire = document.getElementById("password").value;
 
-// async function login() {
-//     let user = {
-//         email: document.getElementById("email").value,
-//         password: document.getElementById("password").value,
-//     };
-//     let reponse = await fetch(apiLogin, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json;charset=utf-8',
-//         },
-//         body: JSON.stringify(user)
-//     });
-//     window.location.href('../index.html')
-// };
+    // On crée cette constante qui nous sera utile pour l'appel à fetch
+    const elementsFormulaire = {
+        email: emailFormulaire,
+        password: passwordFormulaire,
+    };
 
-// login();
-
-// function check(form) {
-//     if (form.email.value == "sophie.bluel@test.tld" && form.password.value == "S0phie") {
-//         return true;
-//     } else {
-//         alert("Erreur dans l’identifiant ou le mot de passe")
-//         return false;
-//     }
-// };
-// check(form);
+    // Appel à fetch
+    let response = await fetch("http://localhost:5678/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(elementsFormulaire) // On passe les éléments du formulaire au format JSON
+    });
+}
