@@ -13,7 +13,6 @@ function connexionReussie() {
 
 function connexionEchouee() {
     const divErreur = document.querySelector(".erreur");
-    document.querySelector(".erreur").innerHTML = "";
     const afficherErreur = document.createElement("p");
     afficherErreur.innerText = "Erreur dans l’identifiant ou le mot de passe";
     divErreur.appendChild(afficherErreur);
@@ -26,10 +25,10 @@ function fonctionConnexion() {
     const formulaire = document.querySelector(".formulaire-connexion");
 
     formulaire.addEventListener("submit", async function(event) {
-        event.preventDefault();
+        event.preventDefault(); // Pour que le clique fonctionne seulement après l'exécution du code ci-dessous
 
         // 1. Accès aux inputs du <form> dans le HTML grâce à getElementById
-        const emailFormulaire = document.getElementById("email").value; // Le .value sert à récupérer la valeur écrite dans cet input
+        const emailFormulaire = document.getElementById("email").value;
         const passwordFormulaire = document.getElementById("password").value;
 
         // 2. On crée cette constante qui nous sera utile pour l'appel à fetch
@@ -42,12 +41,12 @@ function fonctionConnexion() {
         let response = await fetch("http://localhost:5678/api/users/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(elementsFormulaire) // On passe les éléments du formulaire au format JSON
+            body: JSON.stringify(elementsFormulaire) // On passe les éléments du formulaire au format JSON pour obtenir le token
         });
 
         // 4. On récupère le token grâce à la réponse du fetch
         let reponseFetch = await response.json();
-        let token = reponseFetch.token;
+        let token = reponseFetch.token; // Pour récupérer le "token" dans l'API
         console.log(token);
 
         // 5. On appelle les fonctions créées précédemment :

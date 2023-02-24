@@ -11,7 +11,7 @@ async function afficherTravaux() {
     json.forEach(data => { //Une boucle qui parcours tous les travaux tant qu'il y en a dans l'API
         const sectionProjets = document.querySelector(".gallery");
         const baliseFigure = document.createElement("figure");
-        baliseFigure.classList.add("filterDiv", data.categoryId, "show"); // Une classe "cachée" qui servira pour les filtres
+        baliseFigure.classList.add("filterDiv", data.categoryId, "show"); // Une classe qui servira pour les filtres
         const imageFigure = document.createElement("img");
         imageFigure.src = data.imageUrl;
         imageFigure.setAttribute("crossorigin", 'anonymous');
@@ -27,21 +27,6 @@ afficherTravaux();
 
 
 //\\\\\\\\\\\\\\\\\Ajouter les boutons filtrer/////////////////////\\
-
-filterSelection("all");
-
-function filterSelection(classes) {
-    let ensembleDesClasses, i;
-    ensembleDesClasses = document.getElementsByClassName("filterDiv");
-    if (classes == "all") classes = "";
-    // Ajoute la classe "show" aux éléments filtrés, et l'enlève à ceux non sélectionnés
-    for (i = 0; i < ensembleDesClasses.length; i++) {
-        enleverClasseShow(ensembleDesClasses[i], "show");
-        if (ensembleDesClasses[i].className.indexOf(classes) > -1) {
-            ajouterClasseShow(ensembleDesClasses[i], "show")
-        }
-    }
-};
 
 // Afficher les éléments filtrés
 function ajouterClasseShow(element, name) {
@@ -67,6 +52,22 @@ function enleverClasseShow(element, name) {
     }
     element.className = tableauUn.join(" ");
 };
+
+// Fonction pour afficher tous les travaux selon leur catégorie
+function filterSelection(classes) {
+    let ensembleDesClasses, i;
+    ensembleDesClasses = document.getElementsByClassName("filterDiv");
+    if (classes == "all") classes = "";
+    // Ajoute la classe "show" aux éléments filtrés, et l'enlève à ceux non sélectionnés
+    for (i = 0; i < ensembleDesClasses.length; i++) {
+        enleverClasseShow(ensembleDesClasses[i], "show");
+        if (ensembleDesClasses[i].className.indexOf(classes) > -1) {
+            ajouterClasseShow(ensembleDesClasses[i], "show")
+        }
+    }
+};
+
+filterSelection();
 
 // Ajouter la classe "show" au bouton actif
 let bouton = document.getElementById("btnFilters");

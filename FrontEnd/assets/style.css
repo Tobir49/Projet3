@@ -353,3 +353,35 @@ a:hover {
 .show {
     display: block;
 }
+
+
+/* Style pour le mode edit*/
+
+
+/* Barre de modification*/
+
+.barre-modification {
+    display: flex;
+    background-color: black;
+    height: 3.5em;
+    justify-content: center;
+    align-items: center;
+}
+
+.titre-barre {
+    color: white;
+}
+
+.bouton-edition {
+    font-family: 'Syne';
+    background-color: white;
+    border: 1px solid white;
+    margin-left: 1em;
+    height: 2.3em;
+    width: 14em;
+    border-radius: 1.3em;
+    cursor: pointer;
+}
+
+
+/* Modification */

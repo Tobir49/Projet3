@@ -23,6 +23,7 @@ if (recupererToken !== null) {
     log.innerHTML = "logout";
     // Pouvoir retourner sur la page d'accueil
     log.addEventListener('click', seDeconnecter);
+}
 
-    // SInon
-} else if (recupererToken == null) { /*Ne rien faire*/ };
+
+// Afficher les éléments de la page admin pour edit :
