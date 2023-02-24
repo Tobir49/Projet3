@@ -370,6 +370,7 @@ a:hover {
 
 .titre-barre {
     color: white;
+    margin-left: 0.5em;
 }
 
 .bouton-edition {
@@ -384,4 +385,25 @@ a:hover {
 }
 
 
-/* Modification */
+/* Modification (page edit) */
+
+.mode-edition {
+    display: flex;
+}
+
+.modification-photo {
+    margin: 1em 0em 0em 4em;
+}
+
+.modification-texte {
+    margin-bottom: 1em;
+}
+
+.projets-titre-modifications {
+    display: flex;
+    justify-content: center;
+}
+
+.modification-projets {
+    margin: 0.5em 0em 0em 2em;
+}

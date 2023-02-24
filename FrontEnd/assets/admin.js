@@ -1,4 +1,4 @@
-//\\\\\\\\\\\\\\\\\Admin (edit) et modales/////////////////////\\
+//\\\\\\\\\\\\\\\\\Admin (edit)/////////////////////\\
 
 // 0. Vérifier si le token est bien enregistrer dans le localStorage :
 console.log(localStorage);
@@ -27,3 +27,32 @@ if (recupererToken !== null) {
 
 
 // Afficher les éléments de la page admin pour edit :
+
+if (recupererToken !== null) {
+    // 1. Afficher la barre noire :
+    const barreNoire = document.querySelector(".barre-modification");
+    barreNoire.style.display = null;
+    adminBar.removeAttribute("aria-hidden");
+    const parentBarreNoire = document.querySelector('body');
+    parentBarreNoire.appendChild(barreNoire);
+
+    // 2. Afficher les boutons de modification :
+    const modificationPhoto = document.querySelector(".modification-photo");
+    modificationPhoto.style.display = null;
+    modificationPhoto.removeAttribute("aria-hidden");
+    const modificationTexte = document.querySelector(".modification-texte");
+    modificationTexte.style.display = null;
+    modificationTexte.removeAttribute("aria-hidden");
+    const modificationProjets = document.querySelector(".modification-projets");
+    modificationProjets.style.display = null;
+    modificationProjets.removeAttribute("aria-hidden");
+
+    // 3. Faire disparaître les boutons filtre :
+    const boutonsFiltres = document.getElementById("btnFilters");
+    boutonsFiltres.style.display = null;
+    boutonsFiltres.removeAttribute("aria-hidden");
+}
+
+
+
+//\\\\\\\\\\\\\\\\\Modales/////////////////////\\

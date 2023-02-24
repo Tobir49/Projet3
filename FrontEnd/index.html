@@ -22,7 +22,7 @@
     <aside class="barre-modification" id="admin_bar" aria-hidden="true" style="display:none">
         <div class="mode-edition">
             <i class="fa-regular fa-pen-to-square titre-barre"></i>
-            <a href="#" class="titre-barre">Mode édition</a>
+            <p class="titre-barre">Mode édition</p>
         </div>
         <button class="bouton-edition">publier les changements</button>
     </aside>
@@ -41,10 +41,10 @@
 
     <main>
         <section id="introduction">
-            <figure>
+            <figure class="test">
                 <img src="./assets/images/sophie-bluel.png" alt="">
                 <!--Mode edit : 1er bouton modifier-->
-                <div class="modification-photo" aria-hidden="true">
+                <div class="modification-photo" aria-hidden="true" style="display:none">
                     <i class="fa-regular fa-pen-to-square"></i>
                     <a href="#">modifier</a>
                 </div>
@@ -52,9 +52,9 @@
 
             <article>
                 <!--Mode edit : 2e bouton modifier-->
-                <div class="modification-texte" aria-hidden="true">
+                <div class="modification-texte" aria-hidden="true" style="display:none">
                     <i class="fa-regular fa-pen-to-square"></i>
-                    <a href="#">modifier</a>
+                    <p href="#">modifier</a>
                 </div>
 
                 <h2>Designer d'espace</h2>
@@ -67,17 +67,17 @@
         </section>
 
         <section id="portfolio">
-            <div>
+            <div class="projets-titre-modifications">
                 <h2>Mes Projets</h2>
 
                 <!--Mode edit : 3e bouton modifier-->
-                <div class="modification-projets" aria-hidden="true">
+                <div class="modification-projets" aria-hidden="true" style="display:none">
                     <i class="fa-regular fa-pen-to-square"></i>
                     <a href="#">modifier</a>
                 </div>
             </div>
 
-            <div id="btnFilters">
+            <div id="btnFilters" aria-hidden="true">
                 <button class="btn active" onclick="filterSelection('all')"> Tous</button>
                 <button class="btn" onclick="filterSelection('1')"> Objets</button>
                 <button class="btn" onclick="filterSelection('2')"> Appartements</button>
