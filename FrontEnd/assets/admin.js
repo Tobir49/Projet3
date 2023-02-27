@@ -1,13 +1,13 @@
 //\\\\\\\\\\\\\\\\\Admin (edit)/////////////////////\\
 
 // 0. Vérifier si le token est bien enregistrer dans le localStorage :
-console.log(localStorage);
+// console.log(localStorage);
 
-// 1. Récupérer le token
+// 1.1. Récupérer le token
 const recupererToken = window.localStorage.getItem("token");
-console.log(recupererToken);
+// console.log(recupererToken);
 
-// 2.1. Pouvoir se déconnecter (appelée plus tard):
+// 1.2. Pouvoir se déconnecter (appelée plus tard):
 function seDeconnecter(e) {
     // Vider le localStorage
     localStorage.clear();
@@ -15,25 +15,22 @@ function seDeconnecter(e) {
     window.location.href = "index.html";
 };
 
-// 2.2. Vérifier si le token == à celui de l'admin (donc non null) :
+// 2 Afficher les éléments du mode edit si c'est l'admin :
 if (recupererToken !== null) {
-    // Remplacer le "login" par "logout"
-    let log = document.querySelector(".connexion-admin");
-    log.innerHTML = " "
-    log.innerHTML = "logout";
-    // Pouvoir retourner sur la page d'accueil
-    log.addEventListener('click', seDeconnecter);
-}
+    // 2.1. Remplacer le "login" par "logout"
+    let loginAdmin = document.querySelector(".connexion-admin");
+    loginAdmin.innerHTML = " "
+    loginAdmin.innerText = "logout";
+    // 2.2. Pouvoir retourner sur la page d'accueil
+    loginAdmin.addEventListener('click', seDeconnecter);
 
 
-// Afficher les éléments de la page admin pour edit :
-
-if (recupererToken !== null) {
-    // 1. Afficher la barre noire :
+    // 2.3. Afficher les éléments de la page admin pour edit :
+    // A. Afficher la barre noire :
     const barreNoire = document.querySelector(".barre-modification");
     barreNoire.style.display = null;
 
-    // 2. Afficher les boutons de modification :
+    // B. Afficher les boutons de modification :
     const modificationPhoto = document.querySelector(".modification-photo");
     modificationPhoto.style.display = null;
     const modificationTexte = document.querySelector(".modification-texte");
@@ -41,11 +38,10 @@ if (recupererToken !== null) {
     const modificationProjets = document.querySelector(".modification-projets");
     modificationProjets.style.display = null;
 
-    // 3. Faire disparaître les boutons filtre :
+    // C. Faire disparaître les boutons filtre :
     const boutonsFiltres = document.querySelector(".boutons");
     boutonsFiltres.innerHTML = "";
-}
-
+};
 
 
 //\\\\\\\\\\\\\\\\\Modales/////////////////////\\

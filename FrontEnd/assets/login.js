@@ -47,7 +47,7 @@ function fonctionConnexion() {
         // 4. On récupère le token grâce à la réponse du fetch
         let reponseFetch = await response.json();
         let token = reponseFetch.token; // Pour récupérer le "token" dans l'API
-        console.log(token);
+        // console.log(token);
 
         // 5. On appelle les fonctions créées précédemment :
 
