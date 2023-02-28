@@ -7,7 +7,8 @@
 const recupererToken = window.localStorage.getItem("token");
 // console.log(recupererToken);
 
-// 1.2. Pouvoir se déconnecter (appelée plus tard):
+
+// 1.2. Pouvoir se déconnecter :
 function seDeconnecter(e) {
     // Vider le localStorage
     localStorage.clear();
@@ -15,16 +16,16 @@ function seDeconnecter(e) {
     window.location.href = "index.html";
 };
 
+
 // 2 Afficher les éléments du mode edit si c'est l'admin :
 if (recupererToken !== null) {
-    // 2.1. Remplacer le "login" par "logout"
+
+    // 2.1 Remplacer le "login" par "logout"
     let loginAdmin = document.querySelector(".connexion-admin");
     loginAdmin.innerHTML = " "
     loginAdmin.innerText = "logout";
     // 2.2. Pouvoir retourner sur la page d'accueil
     loginAdmin.addEventListener('click', seDeconnecter);
-
-
     // 2.3. Afficher les éléments de la page admin pour edit :
     // A. Afficher la barre noire :
     const barreNoire = document.querySelector(".barre-modification");
@@ -41,7 +42,6 @@ if (recupererToken !== null) {
     // C. Faire disparaître les boutons filtre :
     const boutonsFiltres = document.querySelector(".boutons");
     boutonsFiltres.innerHTML = "";
-    const margeGallerie = document.querySelector(".gallery");
 };
 
 
@@ -53,12 +53,11 @@ const ouvrirModale = function(e) {
     e.preventDefault();
     const target = document.querySelector(e.target.getAttribute('href'));
     target.style.display = null;
-    target.removeAttribute('arria-hidden');
+    target.removeAttribute('aria-hidden');
     target.setAttribute('aria-modal', 'true');
-    const fond = document.querySelector('html');
-    fond.style.background = "rgba(0, 0, 0, 0.3)";
     modal = target;
-    modal.addEventListener('click', fermerModale);
+    const fermer = document.querySelector(".x-close");
+    fermer.addEventListener('click', fermerModale);
     modal.querySelector('.modale-supprimer-btn').addEventListener('click', fermerModale);
 };
 
@@ -68,11 +67,11 @@ const fermerModale = function(e) {
     const fond = document.querySelector('html');
     fond.style.background = "white";
     modal.style.display = "none";
-    modal.setAttribute('arria-hidden', 'true');
+    modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeEventListener('click', fermerModale);
     modal.querySelector('.modale-supprimer-btn').addEventListener('click', fermerModale);
-    modal = null
+    modal = null;
 }
 
 document.querySelectorAll('.open-modal1').forEach(a => {
