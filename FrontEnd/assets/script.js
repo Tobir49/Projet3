@@ -30,12 +30,15 @@ afficherTravaux();
 function afficherProjets(element, name) {
     let i, tableauUn, tableauDeux;
     tableauUn = element.className.split(" ");
+    // console.log(tableauUn); On obtient un tableau avec les éléments filtrés qui contiennent la classe filterDiv et le categoryId
     tableauDeux = name.split(" ");
+    // console.log(tableauDeux); On obtient un tableau avec les éléments filtrés qui contiennent la classe show
     for (i = 0; i < tableauDeux.length; i++) {
-        if (tableauUn.indexOf(tableauDeux[i]) == -1) {
+        if (tableauUn.indexOf(tableauDeux[i]) == -1) { // En dehors du tableau
             element.className += " " + tableauDeux[i];
         }
     }
+    // console.log(element); Un tableau avec les éléments filtrés (qui ont toutes les classes)
 };
 
 // Cacher les éléments non filtrés
@@ -44,17 +47,19 @@ function enleverProjets(element, name) {
     tableauUn = element.className.split(" ");
     tableauDeux = name.split(" ");
     for (i = 0; i < tableauDeux.length; i++) {
-        while (tableauUn.indexOf(tableauDeux[i]) > -1) {
+        while (tableauUn.indexOf(tableauDeux[i]) > -1) { // Dans le tableau
             tableauUn.splice(tableauUn.indexOf(tableauDeux[i]), 1);
         }
     }
     element.className = tableauUn.join(" ");
+    // console.log(element); Un tableau avec tous les éléments mais ceux qui sont filtrés ont une classe en plus : "show"
 };
 
 // Fonction pour afficher tous les travaux selon leur catégorie
 function filterSelection(classes) {
     let classeBoutonAffichage, i;
     classeBoutonAffichage = document.getElementsByClassName("filterDiv");
+    // console.log(classeBoutonAffichage); Un tableau avec tous les projets et les classes / categoryId
     if (classes == "all") classes = "";
     // Ajoute la classe "show" aux éléments filtrés, et l'enlève à ceux non sélectionnés
     for (i = 0; i < classeBoutonAffichage.length; i++) {

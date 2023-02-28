@@ -347,9 +347,6 @@ a:hover {
     display: none;
 }
 
-
-/* Cette classe est ajoutée aux éléments filtrés */
-
 .show {
     display: block;
 }
@@ -406,4 +403,66 @@ a:hover {
 
 .modification-projets {
     margin: 0.7em 0em 0em 2em;
+}
+
+
+/* Modales */
+
+
+/* Modale de début */
+
+.modal {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    background-color: white;
+    border-radius: 1em;
+    width: 40%;
+    height: 40em;
+    backdrop-filter: brightness(60%);
+}
+
+.modal-wrapper {
+    width: 100%;
+}
+
+#titlemodal {
+    color: black;
+    font-weight: 400;
+}
+
+.x-close {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1em;
+}
+
+.boutons-modale {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.galerie-photo {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid black;
+    width: 70%;
+    margin: 0em 0em 2em 7em;
+}
+
+.modale-ajout-btn {
+    font-family: 'Syne';
+    color: white;
+    background-color: #1D6154;
+    border: 1px solid #1D6154;
+    width: 180px;
+    border-radius: 60px;
+    padding: 0.5em 0.3em 0.5em 0.3em;
+    margin-bottom: 1em;
+    cursor: pointer;
+}
+
+.modale-supprimer-btn {
+    color: #B1663C;
 }

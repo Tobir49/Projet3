@@ -41,7 +41,40 @@ if (recupererToken !== null) {
     // C. Faire disparaître les boutons filtre :
     const boutonsFiltres = document.querySelector(".boutons");
     boutonsFiltres.innerHTML = "";
+    const margeGallerie = document.querySelector(".gallery");
 };
 
 
 //\\\\\\\\\\\\\\\\\Modales/////////////////////\\
+
+let modal = null;
+
+const ouvrirModale = function(e) {
+    e.preventDefault();
+    const target = document.querySelector(e.target.getAttribute('href'));
+    target.style.display = null;
+    target.removeAttribute('arria-hidden');
+    target.setAttribute('aria-modal', 'true');
+    const fond = document.querySelector('html');
+    fond.style.background = "rgba(0, 0, 0, 0.3)";
+    modal = target;
+    modal.addEventListener('click', fermerModale);
+    modal.querySelector('.modale-supprimer-btn').addEventListener('click', fermerModale);
+};
+
+const fermerModale = function(e) {
+    if (modal === null) return
+    e.preventDefault();
+    const fond = document.querySelector('html');
+    fond.style.background = "white";
+    modal.style.display = "none";
+    modal.setAttribute('arria-hidden', 'true');
+    modal.removeAttribute('aria-modal');
+    modal.removeEventListener('click', fermerModale);
+    modal.querySelector('.modale-supprimer-btn').addEventListener('click', fermerModale);
+    modal = null
+}
+
+document.querySelectorAll('.open-modal1').forEach(a => {
+    a.addEventListener('click', ouvrirModale)
+})
