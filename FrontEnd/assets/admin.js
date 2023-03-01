@@ -49,6 +49,28 @@ if (recupererToken !== null) {
 
 let modal = null;
 
+//Fonction appelée pour faire apparaître les projets dans la modale
+async function afficherImageModale() {
+    const response = await fetch("http://localhost:5678/api/works");
+    const json = await response.json();
+
+    json.forEach(projets => {
+        const sectionProjets = document.querySelector(".galerie-photo");
+        const baliseFigure = document.createElement("figure");
+        baliseFigure.classList.add("figure-modale");
+        const imageFigure = document.createElement("img");
+        imageFigure.src = projets.imageUrl;
+        imageFigure.setAttribute("crossorigin", 'anonymous');
+        const texteFigure = document.createElement("figcaption");
+        texteFigure.innerHTML = `<p>éditer</p>
+        <i class="fa-solid fa-trash-can poubelle-icone"></i>`;
+        baliseFigure.appendChild(imageFigure);
+        baliseFigure.appendChild(texteFigure);
+        sectionProjets.appendChild(baliseFigure);
+    })
+};
+
+// Pour ouvrir la modale
 const ouvrirModale = function(e) {
     e.preventDefault();
     const target = document.querySelector(e.target.getAttribute('href'));
@@ -56,10 +78,23 @@ const ouvrirModale = function(e) {
     target.removeAttribute('aria-hidden');
     target.setAttribute('aria-modal', 'true');
     modal = target;
-    const fermer = document.querySelector(".x-close");
+
+    //Fermer la modale grâce à la croix
+    const fermer = document.querySelector(".icone");
     fermer.addEventListener('click', fermerModale);
-    modal.querySelector('.modale-supprimer-btn').addEventListener('click', fermerModale);
+
+    //Fermer la modale au clic à l'extérieur
+    const fermerModaleExterieur = document.querySelector('.modal-wrapper');
+    fermerModaleExterieur.addEventListener('click', Propagation);
+    document.querySelector('#modal1').addEventListener('click', fermerModale);
 };
+
+//Vérifier le clic à l'extérieur
+// window.addEventListener('click', e => {
+//     console.log(e.target)
+// });
+
+// Pour fermer la modale
 
 const fermerModale = function(e) {
     if (modal === null) return
@@ -70,10 +105,21 @@ const fermerModale = function(e) {
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeEventListener('click', fermerModale);
-    modal.querySelector('.modale-supprimer-btn').addEventListener('click', fermerModale);
+    modal.querySelector('.modale-supprimer-btn').removeEventListener('click', fermerModale);
     modal = null;
-}
+};
 
+// La fonction pour ouvrir la modale est appelée dans un addEventListener
 document.querySelectorAll('.open-modal1').forEach(a => {
     a.addEventListener('click', ouvrirModale)
-})
+    afficherImageModale();
+});
+
+// Arrêter la propagation de la modale
+function Propagation(e) {
+    e.stopPropagation()
+};
+
+
+
+// Pouvoir supprimer un projet :
