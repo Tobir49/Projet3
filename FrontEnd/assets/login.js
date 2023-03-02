@@ -53,8 +53,8 @@ function fonctionConnexion() {
 
         // 5.A : Si la connexion est réussie : 
         if (response.status === 200) {
-            // On stocke le token dans le localStorage pour le récupérer plus tard
-            window.localStorage.setItem("token", token);
+            // On stocke le token dans le sessionStorage pour le récupérer plus tard
+            window.sessionStorage.setItem("token", token);
             connexionReussie();
         } /* 5.B Si la connexion échoue : */
         else if (response.status === 401 || 404) {

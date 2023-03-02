@@ -1,17 +1,17 @@
 //\\\\\\\\\\\\\\\\\Admin (edit)/////////////////////\\
 
-// 0. Vérifier si le token est bien enregistrer dans le localStorage :
-// console.log(localStorage);
+// 0. Vérifier si le token est bien enregistrer dans le sessionStorage :
+// console.log(sessionStorage);
 
 // 1.1. Récupérer le token
-const recupererToken = window.localStorage.getItem("token");
+const recupererToken = window.sessionStorage.getItem("token");
 // console.log(recupererToken);
 
 
 // 1.2. Pouvoir se déconnecter :
 function seDeconnecter(e) {
-    // Vider le localStorage
-    localStorage.clear();
+    // Vider le sessionStorage
+    sessionStorage.clear();
     // Retourner à la page d'accueil
     window.location.href = "index.html";
 };
@@ -63,7 +63,7 @@ async function afficherImageModale() {
         imageFigure.setAttribute("crossorigin", 'anonymous');
         const texteFigure = document.createElement("figcaption");
         texteFigure.innerHTML = `<p>éditer</p>
-        <i class="fa-solid fa-trash-can poubelle-icone"></i>`;
+        <i class="fa-solid fa-trash-can poubelle-icone id="trash" "></i>`;
         baliseFigure.appendChild(imageFigure);
         baliseFigure.appendChild(texteFigure);
         sectionProjets.appendChild(baliseFigure);
@@ -120,6 +120,18 @@ function Propagation(e) {
     e.stopPropagation()
 };
 
-
-
 // Pouvoir supprimer un projet :
+
+async function supprimerProjet(wordkId) {
+    const response = await fetch(`http://localhost:5678/api/works/${wordkId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+            "authorization": `Bearer ${recupererToken}`
+        }
+    });
+};
+
+
+const logoPoubelleSupprimer = document.getElementById(`trash-${wordkId}`);
+logoPoubelleSupprimer.addEventListener("click", supprimerProjet(wordkId));
