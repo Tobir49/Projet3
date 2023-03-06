@@ -497,9 +497,22 @@ a:hover {
     margin: 0.7em 0.7em 0em 0em;
 }
 
-.figure-modale .poubelle-icone {
-    width: 15px;
-    height: 15px;
+.icone-modale-delete {
+    width: 13px;
+    height: 13px;
+    position: absolute;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 9px;
+}
+
+.bouton-modale-delete {
+    border: 1px solid white;
+    background-color: white;
+    width: 14px;
+    height: 14px;
     position: absolute;
     top: 13px;
     right: 13px;
@@ -507,8 +520,6 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
-    color: white;
     font-size: 9px;
     cursor: pointer;
 }

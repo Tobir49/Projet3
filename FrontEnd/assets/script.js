@@ -2,22 +2,29 @@
 
 // Récupération des données de l'API
 
+// Fonction qui crée les travaux
+function creationTravaux(projets) {
+    const sectionProjets = document.querySelector(".gallery");
+    const baliseFigure = document.createElement("figure");
+    baliseFigure.classList.add("filterDiv", projets.categoryId, "show"); // Une classe qui servira pour les filtres
+    baliseFigure.setAttribute("id", "galery " + projets.id);
+    const imageFigure = document.createElement("img");
+    imageFigure.src = projets.imageUrl;
+    imageFigure.setAttribute("crossorigin", 'anonymous');
+    const texteFigure = document.createElement("figcaption");
+    texteFigure.innerText = projets.title;
+    baliseFigure.appendChild(imageFigure);
+    baliseFigure.appendChild(texteFigure);
+    sectionProjets.appendChild(baliseFigure);
+}
+
 async function afficherTravaux() {
     const response = await fetch("http://localhost:5678/api/works");
     const json = await response.json();
 
-    json.forEach(projets => { //Une boucle qui parcours tous les travaux tant qu'il y en a dans l'API
-        const sectionProjets = document.querySelector(".gallery");
-        const baliseFigure = document.createElement("figure");
-        baliseFigure.classList.add("filterDiv", projets.categoryId, "show"); // Une classe qui servira pour les filtres
-        const imageFigure = document.createElement("img");
-        imageFigure.src = projets.imageUrl;
-        imageFigure.setAttribute("crossorigin", 'anonymous');
-        const texteFigure = document.createElement("figcaption");
-        texteFigure.innerText = projets.title;
-        baliseFigure.appendChild(imageFigure);
-        baliseFigure.appendChild(texteFigure);
-        sectionProjets.appendChild(baliseFigure);
+    json.forEach(projets => { // Une boucle qui parcours tous les travaux tant qu'il y en a dans l'API
+        // Appel de la fonction qui crée les travaux dans cette boucle
+        creationTravaux(projets);
     })
 };
 

@@ -47,6 +47,9 @@ if (recupererToken !== null) {
 
 //\\\\\\\\\\\\\\\\\Modales/////////////////////\\
 
+
+//\\\\\\\\\\\\\\\\\Modale d'ouverture/////////////////////\\
+
 let modal = null;
 
 //Fonction appelée pour faire apparaître les projets dans la modale
@@ -58,14 +61,26 @@ async function afficherImageModale() {
         const sectionProjets = document.querySelector(".galerie-photo");
         const baliseFigure = document.createElement("figure");
         baliseFigure.classList.add("figure-modale");
+        baliseFigure.setAttribute("id", "projets " + projets.id);
         const imageFigure = document.createElement("img");
         imageFigure.src = projets.imageUrl;
         imageFigure.setAttribute("crossorigin", 'anonymous');
         const texteFigure = document.createElement("figcaption");
-        texteFigure.innerHTML = `<p>éditer</p>
-        <i class="fa-solid fa-trash-can poubelle-icone id="trash" "></i>`;
+        texteFigure.innerText = 'éditer';
+        // Bouton et icône
+        const bouton = document.createElement("button");
+        // On lui donne comme id, celui dans l'API
+        bouton.setAttribute("id", projets.id);
+        // Au clic du bouton, on exécute la fonction (sur l'id qu'on pointe)
+        bouton.setAttribute("onclick", "deleteProject(this.id);");
+        bouton.classList.add("bouton-modale-delete");
+        const iconePoubelle = document.createElement('img');
+        iconePoubelle.src = "assets/icons/trash-can-solid.svg";
+        iconePoubelle.classList.add("icone-modale-delete");
         baliseFigure.appendChild(imageFigure);
         baliseFigure.appendChild(texteFigure);
+        baliseFigure.appendChild(bouton);
+        bouton.appendChild(iconePoubelle);
         sectionProjets.appendChild(baliseFigure);
     })
 };
@@ -89,13 +104,8 @@ const ouvrirModale = function(e) {
     document.querySelector('#modal1').addEventListener('click', fermerModale);
 };
 
-//Vérifier le clic à l'extérieur
-// window.addEventListener('click', e => {
-//     console.log(e.target)
-// });
 
 // Pour fermer la modale
-
 const fermerModale = function(e) {
     if (modal === null) return
     e.preventDefault();
@@ -108,7 +118,7 @@ const fermerModale = function(e) {
     modal = null;
 };
 
-// La fonction pour ouvrir la modale est appelée dans un addEventListener
+// La fonction pour ouvrir la modale est appelée grâce à un addEventListener
 document.querySelectorAll('.open-modal1').forEach(a => {
     a.addEventListener('click', ouvrirModale)
     afficherImageModale();
@@ -119,35 +129,21 @@ function Propagation(e) {
     e.stopPropagation()
 };
 
-// Pouvoir supprimer un projet :
-async function chercherId() {
-    const response = await fetch("http://localhost:5678/api/works");
-    const json = await response.json();
-    const workId = json.categoryId;
-};
 
-async function supprimerProjet(wordkId) { // workId is not defined (dans console)
-    const response = await fetch(`http://localhost:5678/api/works/${wordkId}`, {
+//\\\\\\\\\\\\\\\\\Suppression de projet/////////////////////\\
+
+
+async function deleteProject(clicked_id) {
+    const response = await fetch(`http://localhost:5678/api/works/${clicked_id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
             "authorization": `Bearer ${recupererToken}`
         }
     });
+    const deleteModalGaleryNoRefresh = document.getElementById("projets " + clicked_id);
+    deleteModalGaleryNoRefresh.remove();
+
+    const deleteProjectsGaleryNoRefresh = document.getElementById("galery " + clicked_id);
+    deleteProjectsGaleryNoRefresh.remove();
 };
-
-function suppressionEchouee() {
-    console.log("Impossible de supprimer");
-}
-
-if (response.status === 200) {
-    supprimerProjet(wordkId);
-
-} else if (response.status === 401 || 500) {
-    suppressionEchouee();
-};
-
-suppressionEchouee();
-
-// const logoPoubelleSupprimer = document.getElementById(`trash-${wordkId}`);
-// logoPoubelleSupprimer.addEventListener("click", supprimerProjet(wordkId));
