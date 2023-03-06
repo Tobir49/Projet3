@@ -100,7 +100,6 @@ const fermerModale = function(e) {
     if (modal === null) return
     e.preventDefault();
     const fond = document.querySelector('html');
-    fond.style.background = "white";
     modal.style.display = "none";
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
@@ -121,8 +120,13 @@ function Propagation(e) {
 };
 
 // Pouvoir supprimer un projet :
+async function chercherId() {
+    const response = await fetch("http://localhost:5678/api/works");
+    const json = await response.json();
+    const workId = json.categoryId;
+};
 
-async function supprimerProjet(wordkId) {
+async function supprimerProjet(wordkId) { // workId is not defined (dans console)
     const response = await fetch(`http://localhost:5678/api/works/${wordkId}`, {
         method: "DELETE",
         headers: {
@@ -132,6 +136,18 @@ async function supprimerProjet(wordkId) {
     });
 };
 
+function suppressionEchouee() {
+    console.log("Impossible de supprimer");
+}
 
-const logoPoubelleSupprimer = document.getElementById(`trash-${wordkId}`);
-logoPoubelleSupprimer.addEventListener("click", supprimerProjet(wordkId));
+if (response.status === 200) {
+    supprimerProjet(wordkId);
+
+} else if (response.status === 401 || 500) {
+    suppressionEchouee();
+};
+
+suppressionEchouee();
+
+// const logoPoubelleSupprimer = document.getElementById(`trash-${wordkId}`);
+// logoPoubelleSupprimer.addEventListener("click", supprimerProjet(wordkId));
