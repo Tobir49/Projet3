@@ -51,7 +51,6 @@ if (recupererToken !== null) {
 //\\\\\\\\\\\\\\\\\Modale d'ouverture/////////////////////\\
 
 let modal = null;
-
 //Fonction appelée pour faire apparaître les projets dans la modale
 async function afficherImageModale() {
     const response = await fetch("http://localhost:5678/api/works");
@@ -79,8 +78,8 @@ async function afficherImageModale() {
         iconePoubelle.classList.add("icone-modale-delete");
         baliseFigure.appendChild(imageFigure);
         baliseFigure.appendChild(texteFigure);
-        baliseFigure.appendChild(bouton);
         bouton.appendChild(iconePoubelle);
+        baliseFigure.appendChild(bouton);
         sectionProjets.appendChild(baliseFigure);
     })
 };
@@ -100,7 +99,7 @@ const ouvrirModale = function(e) {
 
     //Fermer la modale au clic à l'extérieur
     const fermerModaleExterieur = document.querySelector('.modal-wrapper');
-    fermerModaleExterieur.addEventListener('click', Propagation);
+    fermerModaleExterieur.addEventListener('click', propagation);
     document.querySelector('#modal1').addEventListener('click', fermerModale);
 };
 
@@ -114,7 +113,6 @@ const fermerModale = function(e) {
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeEventListener('click', fermerModale);
-    modal.querySelector('.modale-supprimer-btn').removeEventListener('click', fermerModale);
     modal = null;
 };
 
@@ -125,7 +123,7 @@ document.querySelectorAll('.open-modal1').forEach(a => {
 });
 
 // Arrêter la propagation de la modale
-function Propagation(e) {
+function propagation(e) {
     e.stopPropagation()
 };
 
@@ -137,13 +135,51 @@ async function deleteProject(clicked_id) {
     const response = await fetch(`http://localhost:5678/api/works/${clicked_id}`, {
         method: "DELETE",
         headers: {
-            "Content-Type": "application/json;charset=utf-8",
+            "Content-Type": "application/json",
             "authorization": `Bearer ${recupererToken}`
         }
     });
+
+    // Ne pas rafraîchir la page quand on supprime un projet
     const deleteModalGaleryNoRefresh = document.getElementById("projets " + clicked_id);
     deleteModalGaleryNoRefresh.remove();
 
     const deleteProjectsGaleryNoRefresh = document.getElementById("galery " + clicked_id);
     deleteProjectsGaleryNoRefresh.remove();
 };
+
+
+//\\\\\\\\\\\\\\\\\Modale d'ajout/////////////////////\\
+
+// Ouvrir la modale :
+
+const ouvrirModaleAjout = function(e) {
+    e.preventDefault();
+    const target = document.querySelector(e.target.getAttribute('href'));
+    target.style.display = null;
+    target.removeAttribute('aria-hidden');
+    target.setAttribute('aria-modal', 'true');
+    modal = target;
+    const fermer = document.querySelector(".icone");
+    fermer.addEventListener('click', fermerModaleAjout);
+    const fermerModaleExterieur = document.querySelector('.modale-upload');
+    fermerModaleExterieur.addEventListener('click', propagation);
+    document.querySelector('#modal2').addEventListener('click', fermerModaleAjout);
+};
+
+const fermerModaleAjout = function(e) {
+    if (modal === null) return
+    e.preventDefault();
+    const fond = document.querySelector('html');
+    modal.style.display = "none";
+    modal.setAttribute('aria-hidden', 'true');
+    modal.removeAttribute('aria-modal');
+    modal.removeEventListener('click', fermerModaleAjout);
+    modal = null;
+};
+
+document.querySelectorAll('.open-modal-upload').forEach(a => {
+    a.addEventListener('click', ouvrirModaleAjout)
+});
+
+// Appel à fetch POST :

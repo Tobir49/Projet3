@@ -81,12 +81,43 @@
                         <div class="x-close">
                             <a href="#"><i class="fa-solid fa-xmark icone"></i></a>
                         </div>
-                        <h2 id="titlemodal">Galerie photo</h2>
-                        <div class="galerie-photo"></div>
+                        <h2 class="title-modal">Galerie photo</h2>
+                        <div class="galerie-photo border-bottom"></div>
                         <div class="boutons-modale">
-                            <button class="modale-ajout-btn">Ajouter une photo</button>
+                            <button class="modale-ajout-btn style-input-modale open-modal-upload">Ajouter une photo</button>
                             <a href="#" class="modale-supprimer-btn">Supprimer la galerie</a>
                         </div>
+                    </div>
+
+                    <!--Modale d'ajout-->
+                    <div id="modal2" class="modal-wrapper modale-upload" style="display:none">
+                        <div class="icones-retour-ajout">
+                            <a href="#"><i class="fa-solid fa-arrow-left arrow"></i></i></a>
+                        </div>
+                        <div class="icone-fermer-upload">
+                            <a href="#"><i class="fa-solid fa-xmark icone"></i></a>
+                        </div>
+                        <h2 class="title-modal">Ajout photo</h2>
+
+                        <div class="image-upload">
+                            <i class="fa-sharp fa-regular fa-image image-upload-icone"></i>
+                            <input type="submit" value="+ Ajouter photo">
+                            <p class="sous-titre-upload">jpg, png : 4mo max</p>
+                        </div>
+                        <div class="form-upload">
+                            <label class="upload-title-form">Titre</label>
+                            <input type="name" class="input" name="title-project" id="title-project" required>
+
+                            <label for="categorie-projet" class="upload-title-form">Catégorie</label>
+                            <select name="categories" class="input" id="categorie-projet" required>
+                                <option value=""></option>
+                                <option value="Objet">Objet</option>
+                                <option value="Appartement">Appartement</option>
+                                <option value="Hôtel">Hôtel & Appartement</option>
+                            </select>
+                        </div>
+
+                        <input type="submit" value="Valider" class="style-input-modale upload-input-submit">
                     </div>
                 </aside>
 
