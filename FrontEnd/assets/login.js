@@ -1,47 +1,40 @@
 //\\\\\\\\\\\\\\\\\Se connecter/////////////////////\\
 
-/* Pour se connecter il faut :
-    
-1. Créer une fonction pour rediriger sur la page HTML (utilisée si la connexion est réussie)*/
-
-function connexionReussie() {
+/* 1. Créer une fonction pour rediriger sur la page HTML (utilisée si la connexion est réussie) */
+function successfulConnexion() {
     window.location.href = "./index.html";
 };
 
-/* Une autre fonction qui sera aussi appelée plus tard :
-2. Générer un message d'erreur si la connexion échoue*/
-
-function connexionEchouee() {
-    const divErreur = document.querySelector(".erreur");
-    const afficherErreur = document.createElement("p");
-    afficherErreur.innerText = "Erreur dans l’identifiant ou le mot de passe";
-    divErreur.appendChild(afficherErreur);
+/* 2. Générer un message d'erreur si la connexion échoue */
+function failedConnexion() {
+    const divError = document.querySelector(".erreur");
+    const showErrorMessage = document.createElement("p");
+    showErrorMessage.innerText = "Erreur dans l’identifiant ou le mot de passe";
+    divError.appendChild(showErrorMessage);
 }
 
-/* Une fois ces fonctions créées :
-3. Fonction qui permet de se connecter (+ appel des fonctions précédentes)*/
+/* 3. Fonction qui permet de se connecter (+ appel des fonctions précédentes)*/
+function login() {
+    const divForm = document.querySelector(".formulaire-connexion");
 
-function fonctionConnexion() {
-    const formulaire = document.querySelector(".formulaire-connexion");
-
-    formulaire.addEventListener("submit", async function(event) {
-        event.preventDefault(); // Pour que le clique fonctionne seulement après l'exécution du code ci-dessous
+    divForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
 
         // 1. Accès aux inputs du <form> dans le HTML grâce à getElementById
-        const emailFormulaire = document.getElementById("email").value;
-        const passwordFormulaire = document.getElementById("password").value;
+        const emailValue = document.getElementById("email").value;
+        const passwordValue = document.getElementById("password").value;
 
         // 2. On crée cette constante qui nous sera utile pour l'appel à fetch
-        const elementsFormulaire = {
-            email: emailFormulaire,
-            password: passwordFormulaire,
+        const elementsForm = {
+            email: emailValue,
+            password: passwordValue,
         };
 
         // 3. Appel à fetch
         let response = await fetch("http://localhost:5678/api/users/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(elementsFormulaire) // On passe les éléments du formulaire au format JSON pour obtenir le token
+            body: JSON.stringify(elementsForm) // On passe les éléments du formulaire au format JSON pour obtenir le token
         });
 
         // 4. On récupère le token grâce à la réponse du fetch
@@ -55,12 +48,12 @@ function fonctionConnexion() {
         if (response.status === 200) {
             // On stocke le token dans le sessionStorage pour le récupérer plus tard
             window.sessionStorage.setItem("token", token);
-            connexionReussie();
+            successfulConnexion();
         } /* 5.B Si la connexion échoue : */
         else if (response.status === 401 || 404) {
-            connexionEchouee();
+            failedConnexion();
         }
     });
 };
 
-fonctionConnexion();
+login();

@@ -4,12 +4,12 @@
 // console.log(sessionStorage);
 
 // 1.1. Récupérer le token
-const recupererToken = window.sessionStorage.getItem("token");
-// console.log(recupererToken);
+const getToken = window.sessionStorage.getItem("token");
+// console.log(getToken);
 
 
 // 1.2. Pouvoir se déconnecter :
-function seDeconnecter(e) {
+function logout(e) {
     // Vider le sessionStorage
     sessionStorage.clear();
     // Retourner à la page d'accueil
@@ -18,74 +18,79 @@ function seDeconnecter(e) {
 
 
 // 2 Afficher les éléments du mode edit si c'est l'admin :
-if (recupererToken !== null) {
+if (getToken !== null) {
 
     // 2.1 Remplacer le "login" par "logout"
-    let loginAdmin = document.querySelector(".connexion-admin");
-    loginAdmin.innerHTML = " "
-    loginAdmin.innerText = "logout";
+    let loginNavName = document.querySelector(".connexion-admin");
+    loginNavName.innerHTML = " "
+    loginNavName.innerText = "logout";
     // 2.2. Pouvoir retourner sur la page d'accueil
-    loginAdmin.addEventListener('click', seDeconnecter);
+    loginNavName.addEventListener('click', logout);
     // 2.3. Afficher les éléments de la page admin pour edit :
     // A. Afficher la barre noire :
-    const barreNoire = document.querySelector(".barre-modification");
-    barreNoire.style.display = null;
+    const elementBanner = document.querySelector(".barre-modification");
+    elementBanner.style.display = null;
 
     // B. Afficher les boutons de modification :
-    const modificationPhoto = document.querySelector(".modification-photo");
-    modificationPhoto.style.display = null;
-    const modificationTexte = document.querySelector(".modification-texte");
-    modificationTexte.style.display = null;
-    const modificationProjets = document.querySelector(".modification-projets");
-    modificationProjets.style.display = null;
+    const buttonImageModifictation = document.querySelector(".modification-photo");
+    buttonImageModifictation.style.display = null;
+    const buttonTexteModification = document.querySelector(".modification-texte");
+    buttonTexteModification.style.display = null;
+    const buttonProjectsModification = document.querySelector(".modification-projets");
+    buttonProjectsModification.style.display = null;
 
     // C. Faire disparaître les boutons filtre :
-    const boutonsFiltres = document.querySelector(".boutons");
-    boutonsFiltres.innerHTML = "";
+    const deleteFilterButton = document.querySelector(".boutons");
+    deleteFilterButton.innerHTML = "";
 };
 
 
 //\\\\\\\\\\\\\\\\\Modales/////////////////////\\
 
-
 //\\\\\\\\\\\\\\\\\Modale d'ouverture/////////////////////\\
 
 let modal = null;
+
+// Arrêter la propagation de la modale
+function stopPropagation(e) {
+    e.stopPropagation()
+};
+
 //Fonction appelée pour faire apparaître les projets dans la modale
-async function afficherImageModale() {
+async function showProjectsModal() {
     const response = await fetch("http://localhost:5678/api/works");
     const json = await response.json();
 
-    json.forEach(projets => {
-        const sectionProjets = document.querySelector(".galerie-photo");
-        const baliseFigure = document.createElement("figure");
-        baliseFigure.classList.add("figure-modale");
-        baliseFigure.setAttribute("id", "projets " + projets.id);
-        const imageFigure = document.createElement("img");
-        imageFigure.src = projets.imageUrl;
-        imageFigure.setAttribute("crossorigin", 'anonymous');
-        const texteFigure = document.createElement("figcaption");
-        texteFigure.innerText = 'éditer';
+    json.forEach(work => {
+        const divProjects = document.querySelector(".galerie-photo");
+        const figureElement = document.createElement("figure");
+        figureElement.classList.add("figure-modale");
+        figureElement.setAttribute("id", "projets " + work.id);
+        const imageElement = document.createElement("img");
+        imageElement.src = work.imageUrl;
+        imageElement.setAttribute("crossorigin", 'anonymous');
+        const figcaptionElement = document.createElement("figcaption");
+        figcaptionElement.innerText = 'éditer';
         // Bouton et icône
-        const bouton = document.createElement("button");
+        const deleteButton = document.createElement("button");
         // On lui donne comme id, celui dans l'API
-        bouton.setAttribute("id", projets.id);
+        deleteButton.setAttribute("id", work.id);
         // Au clic du bouton, on exécute la fonction (sur l'id qu'on pointe)
-        bouton.setAttribute("onclick", "deleteProject(this.id);");
-        bouton.classList.add("bouton-modale-delete");
-        const iconePoubelle = document.createElement('img');
-        iconePoubelle.src = "assets/icons/trash-can-solid.svg";
-        iconePoubelle.classList.add("icone-modale-delete");
-        baliseFigure.appendChild(imageFigure);
-        baliseFigure.appendChild(texteFigure);
-        bouton.appendChild(iconePoubelle);
-        baliseFigure.appendChild(bouton);
-        sectionProjets.appendChild(baliseFigure);
+        deleteButton.setAttribute("onclick", "deleteProject(this.id);");
+        deleteButton.classList.add("bouton-modale-delete");
+        const trashIcone = document.createElement('img');
+        trashIcone.src = "assets/icons/trash-can-solid.svg";
+        trashIcone.classList.add("icone-modale-delete");
+        figureElement.appendChild(imageElement);
+        figureElement.appendChild(figcaptionElement);
+        deleteButton.appendChild(trashIcone);
+        figureElement.appendChild(deleteButton);
+        divProjects.appendChild(figureElement);
     })
 };
 
 // Pour ouvrir la modale
-const ouvrirModale = function(e) {
+const openModal = function(e) {
     e.preventDefault();
     const target = document.querySelector(e.target.getAttribute('href'));
     target.style.display = null;
@@ -94,92 +99,90 @@ const ouvrirModale = function(e) {
     modal = target;
 
     //Fermer la modale grâce à la croix
-    const fermer = document.querySelector(".icone");
-    fermer.addEventListener('click', fermerModale);
+    const closeIcone = document.querySelector(".icone");
+    closeIcone.addEventListener('click', closeModal);
 
     //Fermer la modale au clic à l'extérieur
-    const fermerModaleExterieur = document.querySelector('.modal-wrapper');
-    fermerModaleExterieur.addEventListener('click', propagation);
-    document.querySelector('#modal1').addEventListener('click', fermerModale);
+    const closeModalOutside = document.querySelector('.modal-wrapper');
+    closeModalOutside.addEventListener('click', stopPropagation);
+    document.querySelector('#modal1').addEventListener('click', closeModal);
 };
 
 
 // Pour fermer la modale
-const fermerModale = function(e) {
+const closeModal = function(e) {
     if (modal === null) return
     e.preventDefault();
-    const fond = document.querySelector('html');
     modal.style.display = "none";
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
-    modal.removeEventListener('click', fermerModale);
+    modal.removeEventListener('click', closeModal);
     modal = null;
 };
 
 // La fonction pour ouvrir la modale est appelée grâce à un addEventListener
 document.querySelectorAll('.open-modal1').forEach(a => {
-    a.addEventListener('click', ouvrirModale)
-    afficherImageModale();
+    a.addEventListener('click', openModal)
+    showProjectsModal();
 });
-
-// Arrêter la propagation de la modale
-function propagation(e) {
-    e.stopPropagation()
-};
 
 
 //\\\\\\\\\\\\\\\\\Suppression de projet/////////////////////\\
-
 
 async function deleteProject(clicked_id) {
     const response = await fetch(`http://localhost:5678/api/works/${clicked_id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
-            "authorization": `Bearer ${recupererToken}`
+            "authorization": `Bearer ${getToken}`
         }
     });
 
     // Ne pas rafraîchir la page quand on supprime un projet
-    const deleteModalGaleryNoRefresh = document.getElementById("projets " + clicked_id);
-    deleteModalGaleryNoRefresh.remove();
+    const deleteModalProjectsNoRefresh = document.getElementById("projets " + clicked_id);
+    deleteModalProjectsNoRefresh.remove();
 
-    const deleteProjectsGaleryNoRefresh = document.getElementById("galery " + clicked_id);
-    deleteProjectsGaleryNoRefresh.remove();
+    const deleteProjectsNoRefresh = document.getElementById("galery " + clicked_id);
+    deleteProjectsNoRefresh.remove();
 };
 
 
 //\\\\\\\\\\\\\\\\\Modale d'ajout/////////////////////\\
 
 // Ouvrir la modale :
-
-const ouvrirModaleAjout = function(e) {
+const openUploadModal = function(e) {
     e.preventDefault();
     const target = document.querySelector(e.target.getAttribute('href'));
     target.style.display = null;
     target.removeAttribute('aria-hidden');
     target.setAttribute('aria-modal', 'true');
     modal = target;
-    const fermer = document.querySelector(".icone");
-    fermer.addEventListener('click', fermerModaleAjout);
-    const fermerModaleExterieur = document.querySelector('.modale-upload');
-    fermerModaleExterieur.addEventListener('click', propagation);
-    document.querySelector('#modal2').addEventListener('click', fermerModaleAjout);
+    const closeIcone = document.querySelector(".icone");
+    closeIcone.addEventListener('click', closeUploadModal);
+    const closeModalOutside = document.querySelector('.modale-upload');
+    closeModalOutside.addEventListener('click', propagation);
+    document.querySelector('#modal2').addEventListener('click', closeUploadModal);
 };
 
-const fermerModaleAjout = function(e) {
+// Fermer l'ancienne modale au clic :
+const closeUploadModal = function(e) {
     if (modal === null) return
     e.preventDefault();
-    const fond = document.querySelector('html');
     modal.style.display = "none";
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
-    modal.removeEventListener('click', fermerModaleAjout);
+    modal.removeEventListener('click', closeUploadModal);
     modal = null;
 };
 
+// Retourner dans l'ancienne modale grâce à la flèche retour
+
+
+
+// Fonction appelée dans le addEventListener
 document.querySelectorAll('.open-modal-upload').forEach(a => {
-    a.addEventListener('click', ouvrirModaleAjout)
+    a.addEventListener('click', openUploadModal)
 });
 
-// Appel à fetch POST :
+
+// Formulaire fetch :

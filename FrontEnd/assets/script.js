@@ -3,38 +3,36 @@
 // Récupération des données de l'API
 
 // Fonction qui crée les travaux
-function creationTravaux(projets) {
-    const sectionProjets = document.querySelector(".gallery");
-    const baliseFigure = document.createElement("figure");
-    baliseFigure.classList.add("filterDiv", projets.categoryId, "show"); // Une classe qui servira pour les filtres
-    baliseFigure.setAttribute("id", "galery " + projets.id);
-    const imageFigure = document.createElement("img");
-    imageFigure.src = projets.imageUrl;
-    imageFigure.setAttribute("crossorigin", 'anonymous');
-    const texteFigure = document.createElement("figcaption");
-    texteFigure.innerText = projets.title;
-    baliseFigure.appendChild(imageFigure);
-    baliseFigure.appendChild(texteFigure);
-    sectionProjets.appendChild(baliseFigure);
+function createWork(work) {
+    const sectionElement = document.querySelector(".gallery");
+    const figureElement = document.createElement("figure");
+    figureElement.classList.add("filterDiv", work.categoryId, "show"); // Une classe qui servira pour les filtres
+    figureElement.setAttribute("id", "galery " + work.id);
+    const imageElement = document.createElement("img");
+    imageElement.src = work.imageUrl;
+    imageElement.setAttribute("crossorigin", 'anonymous');
+    const figcaptionElement = document.createElement("figcaption");
+    figcaptionElement.innerText = work.title;
+    figureElement.appendChild(imageElement);
+    figureElement.appendChild(figcaptionElement);
+    sectionElement.appendChild(figureElement);
 }
 
-async function afficherTravaux() {
+async function postWork() {
     const response = await fetch("http://localhost:5678/api/works");
     const json = await response.json();
-
-    json.forEach(projets => { // Une boucle qui parcours tous les travaux tant qu'il y en a dans l'API
-        // Appel de la fonction qui crée les travaux dans cette boucle
-        creationTravaux(projets);
+    json.forEach(work => { // Une boucle qui parcours tous les travaux tant qu'il y en a dans l'API
+        createWork(work);
     })
 };
 
-afficherTravaux();
+postWork();
 
 
 //\\\\\\\\\\\\\\\\\Ajouter les boutons filtrer/////////////////////\\
 
 // Afficher les éléments filtrés
-function afficherProjets(element, name) {
+function showProjects(element, name) {
     let i, tableauUn, tableauDeux;
     tableauUn = element.className.split(" ");
     // console.log(tableauUn); On obtient un tableau avec les éléments filtrés qui contiennent la classe filterDiv et le categoryId
@@ -49,7 +47,7 @@ function afficherProjets(element, name) {
 };
 
 // Cacher les éléments non filtrés
-function enleverProjets(element, name) {
+function hideProjects(element, name) {
     let i, tableauUn, tableauDeux;
     tableauUn = element.className.split(" ");
     tableauDeux = name.split(" ");
@@ -70,9 +68,9 @@ function filterSelection(classes) {
     if (classes == "all") classes = "";
     // Ajoute la classe "show" aux éléments filtrés, et l'enlève à ceux non sélectionnés
     for (i = 0; i < classeBoutonAffichage.length; i++) {
-        enleverProjets(classeBoutonAffichage[i], "show");
+        hideProjects(classeBoutonAffichage[i], "show");
         if (classeBoutonAffichage[i].className.indexOf(classes) > -1) {
-            afficherProjets(classeBoutonAffichage[i], "show")
+            showProjects(classeBoutonAffichage[i], "show")
         }
     }
 };
@@ -80,13 +78,13 @@ function filterSelection(classes) {
 filterSelection();
 
 // Ajouter la classe "active" au bouton actuellement cliqué (le mettre en évidence)
-let bouton = document.getElementById("btnFilters");
-let ensembleBoutons = bouton.getElementsByClassName("btn");
-// console.log(ensembleBoutons);
-for (let i = 0; i < ensembleBoutons.length; i++) {
-    ensembleBoutons[i].addEventListener("click", function() {
-        let boutonActuel = document.getElementsByClassName("active");
-        boutonActuel[0].className = boutonActuel[0].className.replace(" active", "");
+let filteredButton = document.getElementById("btnFilters");
+let allButtons = filteredButton.getElementsByClassName("btn");
+// console.log(allButtons);
+for (let i = 0; i < allButtons.length; i++) {
+    allButtons[i].addEventListener("click", function() {
+        let activeButton = document.getElementsByClassName("active");
+        activeButton[0].className = activeButton[0].className.replace(" active", "");
         this.className += " active";
     });
 };
