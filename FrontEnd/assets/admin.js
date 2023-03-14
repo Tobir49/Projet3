@@ -78,15 +78,25 @@ async function showProjectsModal() {
         // Au clic du bouton, on exécute la fonction (sur l'id qu'on pointe)
         deleteButton.setAttribute("onclick", "deleteProject(this.id);");
         deleteButton.classList.add("bouton-modale-delete");
-        const trashIcone = document.createElement('img');
-        trashIcone.src = "assets/icons/trash-can-solid.svg";
-        trashIcone.classList.add("icone-modale-delete");
+        const icon = document.createElement('span');
+        icon.innerHTML = '<i class="fa-solid fa-trash-can icone-modale-delete"></i>';
+        const moveIcone = document.querySelector('.move-icone');
+        divProjects.appendChild(figureElement);
         figureElement.appendChild(imageElement);
         figureElement.appendChild(figcaptionElement);
-        deleteButton.appendChild(trashIcone);
         figureElement.appendChild(deleteButton);
-        divProjects.appendChild(figureElement);
+        figureElement.appendChild(moveIcone);
+        deleteButton.appendChild(icon)
     })
+
+    // Ajouter l'icône pour déplacer les projets (déco)
+    let moveFigure = document.createElement('span');
+    moveFigure.innerHTML = '<i class="fa-solid fa-arrows-up-down-left-right move-icone"></i>';
+
+    let test = json[0];
+
+    test.appendChild(moveFigure);
+
 };
 
 // Pour ouvrir la modale
@@ -120,11 +130,15 @@ const closeModal = function(e) {
     modal = null;
 };
 
-// La fonction pour ouvrir la modale est appelée grâce à un addEventListener
-document.querySelectorAll('.open-modal1').forEach(a => {
-    a.addEventListener('click', openModal)
-    showProjectsModal();
-});
+// Ouvrir et fermer la modale
+function openFirstModal() {
+    document.querySelectorAll('.open-modal1').forEach(a => {
+        a.addEventListener('click', openModal)
+        showProjectsModal();
+    });
+}
+
+openFirstModal();
 
 
 //\\\\\\\\\\\\\\\\\Suppression de projet/////////////////////\\
@@ -149,19 +163,35 @@ async function deleteProject(clicked_id) {
 
 //\\\\\\\\\\\\\\\\\Modale d'ajout/////////////////////\\
 
+
+function changeModal(modal1, modal2, aside) {
+    document.querySelector('.modal-wrapper').style.display = modal1;
+    document.querySelector('.modale-upload').style.display = modal2;
+    document.querySelector('.modal').style.display = aside;
+}
+
+
 // Ouvrir la modale :
 const openUploadModal = function(e) {
     e.preventDefault();
-    const target = document.querySelector(e.target.getAttribute('href'));
-    target.style.display = null;
+    const target = document.querySelector('.open-modal-upload');
+    target.addEventListener('click', changeModal('none', 'flex'));
     target.removeAttribute('aria-hidden');
     target.setAttribute('aria-modal', 'true');
     modal = target;
-    const closeIcone = document.querySelector(".icone");
-    closeIcone.addEventListener('click', closeUploadModal);
+    const closeIcone = document.querySelector(".cross-upload");
+    closeIcone.addEventListener('click', () => {
+        closeUploadModal;
+        changeModal('none', 'none', 'none')
+    });
     const closeModalOutside = document.querySelector('.modale-upload');
-    closeModalOutside.addEventListener('click', propagation);
+    closeModalOutside.addEventListener('click', stopPropagation);
     document.querySelector('#modal2').addEventListener('click', closeUploadModal);
+
+    // Retourner dans l'ancienne modale
+    const returnIcone = document.querySelector(".arrow");
+    returnIcone.addEventListener('click', openFirstModal);
+
 };
 
 // Fermer l'ancienne modale au clic :
@@ -175,14 +205,13 @@ const closeUploadModal = function(e) {
     modal = null;
 };
 
-// Retourner dans l'ancienne modale grâce à la flèche retour
+// Fonction pour ouvrir la modale d'ajout
+function openAddProjectModal() {
+    document.querySelectorAll('.open-modal-upload').forEach(a => {
+        a.addEventListener('click', openUploadModal)
+    });
+};
 
-
-
-// Fonction appelée dans le addEventListener
-document.querySelectorAll('.open-modal-upload').forEach(a => {
-    a.addEventListener('click', openUploadModal)
-});
-
+openAddProjectModal();
 
 // Formulaire fetch :
