@@ -72,11 +72,12 @@
                 <!--Mode edit : 3e bouton modifier-->
                 <div class="modification-projets" style="display:none">
                     <i class="fa-regular fa-pen-to-square"></i>
-                    <a href="#modal1" class="open-modal1">modifier</a>
+                    <a href="#modal1" class="open-modal1" id="open-modal-wrapper">modifier</a>
                 </div>
 
                 <!--Modale d'ouverture-->
-                <aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal" style="display:none">
+                <aside id="modal1" class="modal" role="dialog" style="display:none">
+
                     <div class="modal-wrapper fermer-modale">
                         <div class="x-close">
                             <a href="#"><i class="fa-solid fa-xmark icone"></i></a>
@@ -92,13 +93,14 @@
                     </div>
 
                     <!--Modale d'ajout-->
-                    <div id="modal2" class="modale-upload" aria-hidden="true" aria-labelledby="titlemodal">
+                    <div id="modal2" class="modale-upload" style="display:none">
                         <div class="icones-retour-ajout">
                             <a href="#"><i class="fa-solid fa-arrow-left arrow"></i></i></a>
                         </div>
                         <div class="icone-fermer-upload">
                             <a href="#"><i class="fa-solid fa-xmark icone cross-upload"></i></a>
                         </div>
+
                         <form method="post" class="form-upload">
                             <h2 class="title-modal">Ajout photo</h2>
 
@@ -122,6 +124,7 @@
                             </select>
                             </div>
                         </form>
+
                         <input type="submit" value="Valider" class="style-input-modale upload-input-submit">
                     </div>
                 </aside>

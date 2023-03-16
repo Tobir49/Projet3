@@ -49,14 +49,7 @@ if (getToken !== null) {
 
 //\\\\\\\\\\\\\\\\\Modale d'ouverture/////////////////////\\
 
-let modal = null;
-
-// Arrêter la propagation de la modale
-function stopPropagation(e) {
-    e.stopPropagation()
-};
-
-//Fonction appelée pour faire apparaître les projets dans la modale
+// Fonction appelée pour faire apparaître les projets dans la modale
 async function showProjectsModal() {
     const response = await fetch("http://localhost:5678/api/works");
     const json = await response.json();
@@ -99,41 +92,37 @@ async function showProjectsModal() {
 };
 
 
-// Pour ouvrir la modale
-const openModal = function(e) {
-    e.preventDefault();
-    const target = document.querySelector(e.target.getAttribute('href'));
-    target.style.display = null;
-    target.removeAttribute('aria-hidden');
-    target.setAttribute('aria-modal', 'true');
-    modal = target;
-
-    //Fermer la modale grâce à la croix
-    const closeIcone = document.querySelector(".icone");
-    closeIcone.addEventListener('click', closeModal);
-
-    //Fermer la modale au clic à l'extérieur
-    const closeModalOutside = document.querySelector('.modal-wrapper');
-    closeModalOutside.addEventListener('click', stopPropagation);
-    document.querySelector('#modal1').addEventListener('click', closeModal);
+// Arrêter la propagation de la modale
+function stopPropagation(e) {
+    e.stopPropagation()
 };
 
+// Fonction pour ouvrir la modale
+function openModal(modal, button, cross, wrapper) { // Les paramètres sont utiles pour choisir quelle modale on souhaite ouvrir
+    const chooseModal = document.getElementById(modal);
+    const chooseButton = document.getElementById(button);
+    if (chooseButton !== null) {
+        chooseButton.addEventListener("click", function() {
+            chooseModal.style.display = 'flex';
+        });
+        chooseModal.addEventListener("click", closeModal)
+            // Fermer la modale au clic sur la croix
+        chooseModal.querySelector(cross).addEventListener('click', closeModal)
+            // Fermer la modale au clic à l'extérieur de la modale
+        chooseModal.querySelector(wrapper).addEventListener('click', stopPropagation)
+    }
+}
 
-// Pour fermer la modale
-const closeModal = function(e) {
-    if (modal === null) return
-    e.preventDefault();
-    modal.style.display = "none";
-    modal.setAttribute('aria-hidden', 'true');
-    modal.removeAttribute('aria-modal');
-    modal.removeEventListener('click', closeModal);
-    modal = null;
-};
+// Fonction pour fermer la modale
+function closeModal() {
+    const chooseModal = document.getElementById('modal1');
+    chooseModal.style.display = 'none';
+}
 
-// Ouvrir et fermer la modale
+// Appel des fonctions pour la modale dans une fonction globale (une pour chaque modale)
 function openFirstModal() {
-    document.querySelectorAll('.open-modal1').forEach(a => {
-        a.addEventListener('click', openModal)
+    document.querySelectorAll('.open-modal1').forEach(call => {
+        call.addEventListener('click', openModal('modal1', 'open-modal-wrapper', '.icone', '.modal-wrapper'))
         showProjectsModal();
     });
 }
@@ -163,55 +152,54 @@ async function deleteProject(clicked_id) {
 
 //\\\\\\\\\\\\\\\\\Modale d'ajout/////////////////////\\
 
+// function changeModal(modal1, modal2, aside) {
+//     document.querySelector('.modal-wrapper').style.display = modal1;
+//     document.querySelector('.modale-upload').style.display = modal2;
+//     document.querySelector('.modal').style.display = aside;
+// }
 
-function changeModal(modal1, modal2, aside) {
-    document.querySelector('.modal-wrapper').style.display = modal1;
-    document.querySelector('.modale-upload').style.display = modal2;
-    document.querySelector('.modal').style.display = aside;
-}
 
+// // Ouvrir la modale :
+// const openUploadModal = function(e) {
+//     e.preventDefault();
+//     const target = document.querySelector('.open-modal-upload');
+//     target.addEventListener('click', changeModal('none', 'flex'));
+//     target.removeAttribute('aria-hidden');
+//     target.setAttribute('aria-modal', 'true');
+//     modal = target;
+//     const closeIcone = document.querySelector(".cross-upload");
+//     closeIcone.addEventListener('click', () => {
+//         // closeUploadModal();
+//         changeModal('none', 'none', 'none')
+//     });
+//     const closeModalOutside = document.getElementById('modal2');
+//     closeModalOutside.addEventListener('click', stopPropagation);
+//     document.querySelector('#modal2').addEventListener('click', closeUploadModal);
 
-// Ouvrir la modale :
-const openUploadModal = function(e) {
-    e.preventDefault();
-    const target = document.querySelector('.open-modal-upload');
-    target.addEventListener('click', changeModal('none', 'flex'));
-    target.removeAttribute('aria-hidden');
-    target.setAttribute('aria-modal', 'true');
-    modal = target;
-    const closeIcone = document.querySelector(".cross-upload");
-    closeIcone.addEventListener('click', () => {
-        // closeUploadModal();
-        changeModal('none', 'none', 'none')
-    });
-    const closeModalOutside = document.getElementById('modal2');
-    closeModalOutside.addEventListener('click', stopPropagation);
-    document.querySelector('#modal2').addEventListener('click', closeUploadModal);
+//     // Retourner dans l'ancienne modale
+//     const returnIcone = document.querySelector(".arrow");
+//     returnIcone.addEventListener('click', openFirstModal);
 
-    // Retourner dans l'ancienne modale
-    const returnIcone = document.querySelector(".arrow");
-    returnIcone.addEventListener('click', openFirstModal);
+// };
 
-};
+// // Fermer l'ancienne modale au clic :
+// const closeUploadModal = function(e) {
+//     if (modal === null) return
+//     e.preventDefault();
+//     modal.style.display = "none";
+//     modal.setAttribute('aria-hidden', 'true');
+//     modal.removeAttribute('aria-modal');
+//     modal.removeEventListener('click', closeUploadModal);
+//     modal = null;
+// };
 
-// Fermer l'ancienne modale au clic :
-const closeUploadModal = function(e) {
-    if (modal === null) return
-    e.preventDefault();
-    modal.style.display = "none";
-    modal.setAttribute('aria-hidden', 'true');
-    modal.removeAttribute('aria-modal');
-    modal.removeEventListener('click', closeUploadModal);
-    modal = null;
-};
+// // Fonction pour ouvrir la modale d'ajout
+// function openAddProjectModal() {
+//     document.querySelectorAll('.open-modal-upload').forEach(a => {
+//         a.addEventListener('click', openUploadModal)
+//     });
+// };
 
-// Fonction pour ouvrir la modale d'ajout
-function openAddProjectModal() {
-    document.querySelectorAll('.open-modal-upload').forEach(a => {
-        a.addEventListener('click', openUploadModal)
-    });
-};
+// openAddProjectModal();
 
-openAddProjectModal();
-
-// Formulaire fetch :
+// // Formulaire fetch :
