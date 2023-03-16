@@ -87,17 +87,17 @@ async function showProjectsModal() {
         figureElement.appendChild(deleteButton);
         figureElement.appendChild(moveIcone);
         deleteButton.appendChild(icon)
-    })
-
+    });
     // Ajouter l'icône pour déplacer les projets (déco)
     let moveFigure = document.createElement('span');
     moveFigure.innerHTML = '<i class="fa-solid fa-arrows-up-down-left-right move-icone"></i>';
-
+    console.log(moveFigure);
     let test = json[0];
-
-    test.appendChild(moveFigure);
-
+    console.log(test);
+    // test.appendChild(moveFigure);
+    // test.push(moveFigure);
 };
+
 
 // Pour ouvrir la modale
 const openModal = function(e) {
@@ -181,10 +181,10 @@ const openUploadModal = function(e) {
     modal = target;
     const closeIcone = document.querySelector(".cross-upload");
     closeIcone.addEventListener('click', () => {
-        closeUploadModal;
+        // closeUploadModal();
         changeModal('none', 'none', 'none')
     });
-    const closeModalOutside = document.querySelector('.modale-upload');
+    const closeModalOutside = document.getElementById('modal2');
     closeModalOutside.addEventListener('click', stopPropagation);
     document.querySelector('#modal2').addEventListener('click', closeUploadModal);
 
