@@ -152,54 +152,81 @@ async function deleteProject(clicked_id) {
 
 //\\\\\\\\\\\\\\\\\Modale d'ajout/////////////////////\\
 
-// function changeModal(modal1, modal2, aside) {
-//     document.querySelector('.modal-wrapper').style.display = modal1;
-//     document.querySelector('.modale-upload').style.display = modal2;
-//     document.querySelector('.modal').style.display = aside;
-// }
+// Fonction pour choisir la modale à afficher
+function changeModal(modal1, modalDirection, modal2) {
+    document.querySelector('.modal-wrapper').style.display = modal1;
+    // Ici on change la direction de la modale, afin de lui redonner son état d'origine (qui est en colonne)
+    document.querySelector('.modal-wrapper').style.flexDirection = modalDirection;
+    document.querySelector('.modale-upload').style.display = modal2;
+}
+
+// Fonction pour ouvrir la 2e modale
+function openSecondModal() {
+    document.querySelectorAll('.open-modal-upload').forEach(call => {
+        call.addEventListener('click', () => {
+            changeModal('none', '', 'flex');
+            openModal('modal1', 'open-second-modal', '.cross-upload', '.modale-upload')
+        })
+    })
+}
+
+openSecondModal();
+
+// Sert à utiliser la flèche de la 2e modale afin de revenir en arrière
+let returnFirstModale = document.querySelector('.arrow');
+returnFirstModale.addEventListener('click', () => {
+    changeModal('flex', 'column', 'none');
+});
 
 
-// // Ouvrir la modale :
-// const openUploadModal = function(e) {
-//     e.preventDefault();
-//     const target = document.querySelector('.open-modal-upload');
-//     target.addEventListener('click', changeModal('none', 'flex'));
-//     target.removeAttribute('aria-hidden');
-//     target.setAttribute('aria-modal', 'true');
-//     modal = target;
-//     const closeIcone = document.querySelector(".cross-upload");
-//     closeIcone.addEventListener('click', () => {
-//         // closeUploadModal();
-//         changeModal('none', 'none', 'none')
-//     });
-//     const closeModalOutside = document.getElementById('modal2');
-//     closeModalOutside.addEventListener('click', stopPropagation);
-//     document.querySelector('#modal2').addEventListener('click', closeUploadModal);
+//\\\\\\\\\\\\\\\\\Ajouter un projet/////////////////////\\
 
-//     // Retourner dans l'ancienne modale
-//     const returnIcone = document.querySelector(".arrow");
-//     returnIcone.addEventListener('click', openFirstModal);
+// Fonction fetch
+function addWorks() {
 
-// };
+    // On récupère le formulaire qu'on stocke dans une variable
+    const formAddWorks = document.querySelector('.form-upload');
 
-// // Fermer l'ancienne modale au clic :
-// const closeUploadModal = function(e) {
-//     if (modal === null) return
-//     e.preventDefault();
-//     modal.style.display = "none";
-//     modal.setAttribute('aria-hidden', 'true');
-//     modal.removeAttribute('aria-modal');
-//     modal.removeEventListener('click', closeUploadModal);
-//     modal = null;
-// };
+    // Au clic du bouton submit du formulaire, on exécute la fonction :
+    formAddWorks.addEventListener('submit', event => {
+        event.preventDefault();
 
-// // Fonction pour ouvrir la modale d'ajout
-// function openAddProjectModal() {
-//     document.querySelectorAll('.open-modal-upload').forEach(a => {
-//         a.addEventListener('click', openUploadModal)
-//     });
-// };
+        // Création d'un FormData
+        let formData = new FormData(formAddWorks);
+        const addPicture = document.getElementById('upload-image').files[0];
+        const addTitle = document.getElementById('title-project').value;
+        const addCategory = document.getElementById('categorie-projet').value;
+        formData.append('image', addPicture);
+        formData.append('title', addTitle);
+        formData.append('category', addCategory);
 
-// openAddProjectModal();
+        // Afficher l'image sélectionnée sur le formulaire
+        let viewImage = new FileReader();
+        viewImage.addEventListener('load', function() {
+            formData.append('image', viewImage.result)
+        });
 
-// // Formulaire fetch :
+        // Appel à fetch pour envoyer le projet, si tout le formulaire est rempli
+        let response = fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${getToken}`,
+                'accept': 'application/json',
+            },
+            body: formData,
+        })
+    });
+
+    // Les conditions suivantes servent à plusieurs choses : 
+    // 1. Changer l'affichage
+    if (response.status === 201) {
+        let inputSubmit = document.querySelector('.upload-input-submit');
+        // Le bouton devient vert lorsque le formulaire est rempli intégralement
+        inputSubmit.style.backgroundColor = "#1D6154";
+    }
+    // 2. S'il y a une erreur dans le formulaire, alors afficher un message d'erreur 
+    else if (response.status === 400 || 401 || 500) {
+        console.log("veuillez remplir le formulaire complètement");
+    }
+
+}
