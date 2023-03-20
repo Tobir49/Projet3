@@ -81,14 +81,6 @@ async function showProjectsModal() {
         figureElement.appendChild(moveIcone);
         deleteButton.appendChild(icon)
     });
-    // Ajouter l'icône pour déplacer les projets (déco)
-    let moveFigure = document.createElement('span');
-    moveFigure.innerHTML = '<i class="fa-solid fa-arrows-up-down-left-right move-icone"></i>';
-    console.log(moveFigure);
-    let test = json[0];
-    console.log(test);
-    // test.appendChild(moveFigure);
-    // test.push(moveFigure);
 };
 
 
@@ -181,52 +173,56 @@ returnFirstModale.addEventListener('click', () => {
 
 //\\\\\\\\\\\\\\\\\Ajouter un projet/////////////////////\\
 
-// Fonction fetch
-function addWorks() {
+// Afficher l'image choisie
+let imageForm = document.getElementById('upload-image');
+imageForm.addEventListener('change', function(event) {
+    let reader = new FileReader();
+    let file = event.target.files[0];
+    reader.onload = function(event) {
+        let img = document.createElement("img", "image-form");
+        /// Définir la source de l'image sur le contenu du fichier
+        img.src = event.target.result;
+        /// récupération du container de la partie image du formulaire ///
+        let container = document.querySelector(".image-upload");
+        container.innerHTML = '';
+        container.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+});
+
+// Au clic du bouton submit du formulaire, on exécute la fonction :
+async function AddWorksFetch() {
+
+    const addTitle = document.getElementById('title-project');
+    const addPicture = document.getElementById('upload-image');
+    const addCategory = document.getElementById('categorie-projet');
 
     // On récupère le formulaire qu'on stocke dans une variable
     const formAddWorks = document.querySelector('.form-upload');
-
-    // Au clic du bouton submit du formulaire, on exécute la fonction :
-    formAddWorks.addEventListener('submit', event => {
+    formAddWorks.addEventListener('submit', (event) => {
         event.preventDefault();
+
+        if (!addTitle.value || !addPicture.files[0] || !addCategory.value) {
+            alert("Remplir tous les champs avant d'envoyer le projet");
+            return;
+        }
 
         // Création d'un FormData
         let formData = new FormData(formAddWorks);
-        const addPicture = document.getElementById('upload-image').files[0];
-        const addTitle = document.getElementById('title-project').value;
-        const addCategory = document.getElementById('categorie-projet').value;
-        formData.append('image', addPicture);
-        formData.append('title', addTitle);
-        formData.append('category', addCategory);
-
-        // Afficher l'image sélectionnée sur le formulaire
-        let viewImage = new FileReader();
-        viewImage.addEventListener('load', function() {
-            formData.append('image', viewImage.result)
-        });
+        formData.append('image', addPicture.files[0]);
+        formData.append('title', addTitle.value);
+        formData.append('category', addCategory.value);
 
         // Appel à fetch pour envoyer le projet, si tout le formulaire est rempli
-        let response = fetch('http://localhost:5678/api/works', {
+        fetch('http://localhost:5678/api/works', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${getToken}`,
                 'accept': 'application/json',
             },
             body: formData,
-        })
-    });
-
-    // Les conditions suivantes servent à plusieurs choses : 
-    // 1. Changer l'affichage
-    if (response.status === 201) {
-        let inputSubmit = document.querySelector('.upload-input-submit');
-        // Le bouton devient vert lorsque le formulaire est rempli intégralement
-        inputSubmit.style.backgroundColor = "#1D6154";
-    }
-    // 2. S'il y a une erreur dans le formulaire, alors afficher un message d'erreur 
-    else if (response.status === 400 || 401 || 500) {
-        console.log("veuillez remplir le formulaire complètement");
-    }
-
+        });
+    })
 }
+
+AddWorksFetch();

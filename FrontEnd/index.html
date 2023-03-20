@@ -104,28 +104,29 @@
                         <form method="post" class="form-upload">
                             <h2 class="title-modal">Ajout photo</h2>
 
-                            <div class="image-upload">
+                            <div class="image-upload" id="change-image">
                                 <i class="fa-sharp fa-regular fa-image image-upload-icone"></i>
-                                <!-- <input type="submit" value="+ Ajouter photo"> -->
                                 <label for="upload-image" class="title-upload-image">+ Ajouter une photo</label>
-                                <input type="file" id="upload-image" name="upload-image" max-size="4000" accept=".jpg, .jpeg, .png" multiple>
+                                <input type="file" id="upload-image" name="upload-image" max-size="4000" accept=".jpg, .jpeg, .png" multiple required>
                                 <p class="sous-titre-upload">jpg, png : 4mo max</p>
                             </div>
+
                             <div class="form-category">
                                 <label class="upload-title-form">Titre</label>
                                 <input type="name" class="input" name="title-project" id="title-project" required>
 
                                 <label for="categorie-projet" class="upload-title-form">Catégorie</label>
                                 <select name="categories" class="input" id="categorie-projet" required>
-                                <option value=""></option>
-                                <option value="Objet">Objet</option>
-                                <option value="Appartement">Appartement</option>
-                                <option value="Hôtel">Hôtel & Appartement</option>
-                            </select>
+                                    <option value=""></option>
+                                    <option value="Objet">Objet</option>
+                                    <option value="Appartement">Appartement</option>
+                                    <option value="Hôtel">Hôtel & Appartement</option>
+                                </select>
                             </div>
-                        </form>
 
-                        <input type="submit" value="Valider" class="style-input-modale upload-input-submit">
+                            <input type="submit" value="Valider" class="style-input-modale upload-input-submit">
+
+                        </form>
                     </div>
                 </aside>
 
