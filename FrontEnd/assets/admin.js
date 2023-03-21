@@ -195,9 +195,9 @@ imageForm.addEventListener('change', function(event) {
 async function AddWorksFetch() {
 
     // Récupération des valeurs renseignées dans le formulaire
-    const addPicture = document.getElementById('upload-image').files[0];
-    const addTitle = document.getElementById('title-project').value;
-    const addCategory = document.getElementById('categorie-projet').value;
+    const addPicture = document.getElementById('upload-image');
+    const addTitle = document.getElementById('title-project');
+    const addCategory = document.getElementById('categorie-projet');
 
     // Récupération du formulaire (+ ajout d'un EventListener)
     const formAddWorks = document.querySelector('.form-upload');
@@ -205,20 +205,29 @@ async function AddWorksFetch() {
         event.preventDefault();
 
         // FormData utile pour l'appel à fetch (POST)
-        let formData = new FormData(formAddWorks);
-        formData.append('image', addPicture);
-        formData.append('title', addTitle);
-        formData.append('category', addCategory);
+        let formData = new FormData();
+        formData.append('title', addTitle.value);
+        formData.append('image', addPicture.files[0]);
+        formData.append('category', addCategory.value);
 
         // Appel fetch (si le formulaire rempli entièrement)
         fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${getToken}` },
-            body: formData
-        });
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${getToken}` },
+                body: formData
+            })
+            // La réponse de l'API
+            .then(resultat => {
+                console.log(resultat);
+                return resultat.json();
+            })
+            // Réponse de ce qu'on envoie
+            .then(event => {
+                console.log(event);
+            })
 
         // Condition pour que le formulaire s'envoie
-        if (!addPicture === null || !addTitle === null || !addCategory === null) {
+        if (addPicture === null || addTitle === null || addCategory === null) {
             // Message d'erreur :
             const errorMessage = document.getElementById('error-adding-work');
             const showErrorMessage = document.createElement("p");
@@ -227,7 +236,6 @@ async function AddWorksFetch() {
             errorMessage.appendChild(showErrorMessage);
             return;
         }
-
     })
 }
 

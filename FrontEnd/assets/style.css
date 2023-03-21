@@ -285,11 +285,14 @@ input[type="submit"] {
     font-family: 'Syne';
     font-weight: 700;
     color: white;
-    background-color: #1D6154;
     margin: 2em auto;
     width: 180px;
     text-align: center;
     border-radius: 60px;
+}
+
+#envoyer-contact {
+    background-color: #1D6154;
 }
 
 footer nav ul {
@@ -466,11 +469,14 @@ a:hover {
     padding-bottom: 1.5em;
 }
 
+.modale-ajout-btn {
+    background-color: #1D6154;
+    border: 1px solid #1D6154;
+}
+
 .style-input-modale {
     font-family: 'Syne';
     color: white;
-    background-color: #1D6154;
-    border: 1px solid #1D6154;
     width: 250px;
     border-radius: 60px;
     padding: 0.5em 0.3em 0.5em 0.3em;
@@ -635,9 +641,14 @@ a:hover {
     margin: 0em 0em -1em 0em;
 }
 
-.modale-upload>.upload-input-submit {
+.upload-input-submit {
     width: 250px;
     background-color: #A7A7A7;
+    border: 0px;
+}
+
+.upload-input-submit:hover {
+    background-color: #1D6154;
     border: 0px;
 }
 
