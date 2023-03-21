@@ -1,11 +1,7 @@
 //\\\\\\\\\\\\\\\\\Admin (edit)/////////////////////\\
 
-// 0. Vérifier si le token est bien enregistrer dans le sessionStorage :
-// console.log(sessionStorage);
-
 // 1.1. Récupérer le token
 const getToken = window.sessionStorage.getItem("token");
-// console.log(getToken);
 
 // 1.2. Pouvoir se déconnecter :
 function logout(e) {
@@ -18,7 +14,6 @@ function logout(e) {
 
 // 2 Afficher les éléments du mode edit si c'est l'admin :
 if (getToken !== null) {
-
     // 2.1 Remplacer le "login" par "logout"
     let loginNavName = document.querySelector(".connexion-admin");
     loginNavName.innerHTML = " "
@@ -29,7 +24,6 @@ if (getToken !== null) {
     // A. Afficher la barre noire :
     const elementBanner = document.querySelector(".barre-modification");
     elementBanner.style.display = null;
-
     // B. Afficher les boutons de modification :
     const buttonImageModifictation = document.querySelector(".modification-photo");
     buttonImageModifictation.style.display = null;
@@ -37,7 +31,6 @@ if (getToken !== null) {
     buttonTexteModification.style.display = null;
     const buttonProjectsModification = document.querySelector(".modification-projets");
     buttonProjectsModification.style.display = null;
-
     // C. Faire disparaître les boutons filtre :
     const deleteFilterButton = document.querySelector(".boutons");
     deleteFilterButton.innerHTML = "";
@@ -46,15 +39,14 @@ if (getToken !== null) {
 
 //\\\\\\\\\\\\\\\\\Modales/////////////////////\\
 
-//\\\\\\\\\\\\\\\\\Modale d'ouverture/////////////////////\\
+//\\\\\\\\\\\\\\\\\Afficher projets petit format/////////////////////\\
 
-// Fonction appelée pour faire apparaître les projets dans la modale
-
+// Création d'une méthode pour afficher des projets
 function createWorksModal(work) {
     const divProjects = document.querySelector(".galerie-photo");
     const figureElement = document.createElement("figure");
     figureElement.classList.add("figure-modale");
-    figureElement.setAttribute("id", "projets " + work.id);
+    figureElement.setAttribute("id", "projets " + work.id); // On lui donne comme id son id dans l'API (1, 2, 3,...)
     const imageElement = document.createElement("img");
     imageElement.src = work.imageUrl;
     imageElement.setAttribute("crossorigin", 'anonymous');
@@ -64,7 +56,7 @@ function createWorksModal(work) {
     const deleteButton = document.createElement("button");
     // On lui donne comme id, celui dans l'API
     deleteButton.setAttribute("id", work.id);
-    // Au clic du bouton, on exécute la fonction (sur l'id qu'on pointe)
+    // Au clic du bouton, on exécute la fonction (sur la figure avec l'id correspondant)
     deleteButton.setAttribute("onclick", "deleteProject(this.id);");
     deleteButton.classList.add("bouton-modale-delete");
     const icone = document.createElement('span');
@@ -83,12 +75,13 @@ function createWorksModal(work) {
 async function showProjectsModal() {
     const response = await fetch("http://localhost:5678/api/works");
     const json = await response.json();
-
     json.forEach(work => {
+        // On appelle la méthode qui permet afficher des projets en petit format
         createWorksModal(work);
     });
 };
 
+//\\\\\\\\\\\\\\\\\Modale d'ouverture/////////////////////\\
 
 // Arrêter la propagation de la modale
 function stopPropagation(event) {
@@ -96,7 +89,7 @@ function stopPropagation(event) {
 };
 
 // Fonction pour ouvrir la modale
-function openModal(aside, openButton, iconeClose, divModal) { // Les paramètres sont utiles pour choisir quelle modale on souhaite ouvrir
+function showModal(aside, openButton, iconeClose, divModal) { // Les paramètres sont utiles pour choisir quelle modale on souhaite ouvrir
     const chooseModal = document.getElementById(aside);
     const chooseButton = document.getElementById(openButton);
     if (chooseButton !== null) {
@@ -118,14 +111,17 @@ function closeModal() {
 }
 
 // Appel des fonctions pour la modale dans une fonction globale (une pour chaque modale)
-function openFirstModal() {
+function methodFirstModal() {
+    // On va cherher le lien pour ouvrir la 1e modale
     document.querySelectorAll('.open-modal1').forEach(call => {
-        call.addEventListener('click', openModal('modal1', 'open-modal-wrapper', '.icone', '.modal-wrapper'))
+        // On change les paramètres pour la méthode d'ouverture de modale
+        call.addEventListener('click', showModal('modal1', 'open-modal-wrapper', '.icone', '.modal-wrapper'))
+            // Affichage des projets
         showProjectsModal();
     });
 }
 
-openFirstModal();
+methodFirstModal();
 
 
 //\\\\\\\\\\\\\\\\\Suppression de projet/////////////////////\\
@@ -140,9 +136,10 @@ async function deleteProject(clicked_id) {
     });
 
     // Ne pas rafraîchir la page quand on supprime un projet
+    // 1. Sur la page de base
     const deleteModalProjectsNoRefresh = document.getElementById("projets " + clicked_id);
     deleteModalProjectsNoRefresh.remove();
-
+    // 2. Dans la modale
     const deleteProjectsNoRefresh = document.getElementById("galery " + clicked_id);
     deleteProjectsNoRefresh.remove();
 };
@@ -150,7 +147,7 @@ async function deleteProject(clicked_id) {
 
 //\\\\\\\\\\\\\\\\\Modale d'ajout/////////////////////\\
 
-// Fonction pour choisir la modale à afficher
+// Fonction pour choisir la modale à afficher (changer son style)
 function changeModal(styleModal1, modalDirection, styleModal2) {
     document.querySelector('.modal-wrapper').style.display = styleModal1;
     // Ici on change la direction de la modale, afin de lui redonner son état d'origine (qui est en colonne)
@@ -159,16 +156,18 @@ function changeModal(styleModal1, modalDirection, styleModal2) {
 }
 
 // Fonction pour ouvrir la 2e modale
-function openSecondModal() {
+function methodSecondModal() {
+    // On récupère le bouton qui ouvre la 2e modale
     document.querySelectorAll('.open-modal-upload').forEach(call => {
         call.addEventListener('click', () => {
-            changeModal('none', '', 'flex');
-            openModal('modal1', 'open-second-modal', '.cross-upload', '.modale-upload')
+            // On lui applique ces méthodes au clic du bouton
+            changeModal('none', '', 'flex'); // Le 2e paramètre est inutile car il concerne la 1e modale
+            showModal('modal1', 'open-second-modal', '.cross-upload', '.modale-upload')
         })
     })
 }
 
-openSecondModal();
+methodSecondModal();
 
 // Sert à utiliser la flèche de la 2e modale afin de revenir en arrière
 let returnFirstModale = document.querySelector('.arrow');
@@ -180,19 +179,25 @@ returnFirstModale.addEventListener('click', () => {
 //\\\\\\\\\\\\\\\\\Ajouter un projet/////////////////////\\
 
 // Afficher l'image choisie
+// 1. On récupère l'input pour ajouter une image
 let imageForm = document.getElementById('upload-image');
+// 2. On lui applique un listener pour changer son style
 imageForm.addEventListener('change', function(event) {
-    let newReader = new FileReader();
+    let newReader = new FileReader(); // Permet de lire le fichier choisi
+    // 3. On vise le 1er document (et unique ici)
     let file = event.target.files[0];
     newReader.onload = function(event) {
         let imageUpload = document.createElement("img");
         imageUpload.classList.add('image-load');
-        // Récup source image sur le pc
+        // 4. Récupérer la source image sur le pc
         imageUpload.src = event.target.result;
         let divImageForm = document.getElementById("change-image");
+        // 5. Vider la div de l'input
         divImageForm.innerHTML = '';
+        // 6. Lier l'image à la div pour remplacer son ancien contenu
         divImageForm.appendChild(imageUpload);
     };
+    // 7. Cette méthode sert à lire le contenu du fichier choisi (file)
     newReader.readAsDataURL(file);
 });
 
@@ -205,10 +210,9 @@ async function AddWorksFetch() {
     const addCategory = document.getElementById('categorie-projet');
 
     // Récupération du formulaire (+ ajout d'un EventListener)
-    const formAddWorks = document.querySelector('.form-upload');
-    formAddWorks.addEventListener('submit', (event) => {
+    const addingWorksForm = document.querySelector('.form-upload');
+    addingWorksForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        console.log(addPicture, addTitle, addCategory);
 
         // Condition pour que le formulaire s'envoie
         if (!addPicture.files[0] || !addTitle.value || !addCategory.value) {
@@ -217,7 +221,7 @@ async function AddWorksFetch() {
             errorMessage.style.display = 'flex';
             return;
         };
-
+        // Permet de cacher le message s'il y a eu une erreur auparavant
         const errorMessage = document.getElementById('error-adding-work');
         errorMessage.style.display = 'none';
 
@@ -234,14 +238,16 @@ async function AddWorksFetch() {
             body: formData
         })
 
-        // La réponse de l'API
+        // On rend le résultat au format json, pour l'afficher
         .then(resultat => {
             return resultat.json();
         })
 
-        // Réponse de ce qu'on envoie
+        // Éviter de refresh la page
         .then(work => {
+            // On appelle la méthode pour afficher les projets sur la page
             createWork(work);
+            // On appelle la méthode pour afficher les projets sur la modale
             createWorksModal(work);
         })
     })
