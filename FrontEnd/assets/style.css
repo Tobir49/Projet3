@@ -502,12 +502,20 @@ a:hover {
     color: white;
 }
 
-.move-icone {
+.figure-modale .move-icone {
+    display: none;
     font-size: 10px;
     color: white;
+    position: absolute;
+    top: 13px;
+    left: 3.2em;
     background-color: black;
     padding: 2px;
     border-radius: 2px;
+}
+
+.figure-modale:hover .move-icone {
+    display: flex;
 }
 
 .bouton-modale-delete {
@@ -520,6 +528,7 @@ a:hover {
     right: 13px;
     border-radius: 2px;
     display: flex;
+    padding-top: 2px;
     justify-content: center;
     align-items: center;
     font-size: 9px;
@@ -564,6 +573,12 @@ a:hover {
     color: #CBD6DC;
     font-size: 70px;
     margin-top: 0.1em;
+}
+
+.image-load {
+    width: 60%;
+    align-items: center;
+    height: 10.5em;
 }
 
 .image-upload {
@@ -624,4 +639,8 @@ a:hover {
     width: 250px;
     background-color: #A7A7A7;
     border: 0px;
+}
+
+.error-message-work {
+    color: #B1663C;
 }

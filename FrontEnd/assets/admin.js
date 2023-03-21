@@ -7,7 +7,6 @@
 const getToken = window.sessionStorage.getItem("token");
 // console.log(getToken);
 
-
 // 1.2. Pouvoir se déconnecter :
 function logout(e) {
     // Vider le sessionStorage
@@ -71,37 +70,39 @@ async function showProjectsModal() {
         // Au clic du bouton, on exécute la fonction (sur l'id qu'on pointe)
         deleteButton.setAttribute("onclick", "deleteProject(this.id);");
         deleteButton.classList.add("bouton-modale-delete");
-        const icon = document.createElement('span');
-        icon.innerHTML = '<i class="fa-solid fa-trash-can icone-modale-delete"></i>';
-        const moveIcone = document.querySelector('.move-icone');
+        const icone = document.createElement('span');
+        icone.innerHTML = '<i class="fa-solid fa-trash-can icone-modale-delete"></i>';
+        const moveIcone = document.createElement('span');
+        moveIcone.innerHTML = '<i class="fa-solid fa-arrows-up-down-left-right move-icone"></i>';
+
         divProjects.appendChild(figureElement);
         figureElement.appendChild(imageElement);
         figureElement.appendChild(figcaptionElement);
         figureElement.appendChild(deleteButton);
+        deleteButton.appendChild(icone);
         figureElement.appendChild(moveIcone);
-        deleteButton.appendChild(icon)
     });
 };
 
 
 // Arrêter la propagation de la modale
-function stopPropagation(e) {
-    e.stopPropagation()
+function stopPropagation(event) {
+    event.stopPropagation()
 };
 
 // Fonction pour ouvrir la modale
-function openModal(modal, button, cross, wrapper) { // Les paramètres sont utiles pour choisir quelle modale on souhaite ouvrir
-    const chooseModal = document.getElementById(modal);
-    const chooseButton = document.getElementById(button);
+function openModal(aside, openButton, iconeClose, divModal) { // Les paramètres sont utiles pour choisir quelle modale on souhaite ouvrir
+    const chooseModal = document.getElementById(aside);
+    const chooseButton = document.getElementById(openButton);
     if (chooseButton !== null) {
         chooseButton.addEventListener("click", function() {
             chooseModal.style.display = 'flex';
         });
         chooseModal.addEventListener("click", closeModal)
             // Fermer la modale au clic sur la croix
-        chooseModal.querySelector(cross).addEventListener('click', closeModal)
+        chooseModal.querySelector(iconeClose).addEventListener('click', closeModal)
             // Fermer la modale au clic à l'extérieur de la modale
-        chooseModal.querySelector(wrapper).addEventListener('click', stopPropagation)
+        chooseModal.querySelector(divModal).addEventListener('click', stopPropagation)
     }
 }
 
@@ -145,11 +146,11 @@ async function deleteProject(clicked_id) {
 //\\\\\\\\\\\\\\\\\Modale d'ajout/////////////////////\\
 
 // Fonction pour choisir la modale à afficher
-function changeModal(modal1, modalDirection, modal2) {
-    document.querySelector('.modal-wrapper').style.display = modal1;
+function changeModal(styleModal1, modalDirection, styleModal2) {
+    document.querySelector('.modal-wrapper').style.display = styleModal1;
     // Ici on change la direction de la modale, afin de lui redonner son état d'origine (qui est en colonne)
     document.querySelector('.modal-wrapper').style.flexDirection = modalDirection;
-    document.querySelector('.modale-upload').style.display = modal2;
+    document.querySelector('.modale-upload').style.display = styleModal2;
 }
 
 // Fonction pour ouvrir la 2e modale
@@ -176,52 +177,57 @@ returnFirstModale.addEventListener('click', () => {
 // Afficher l'image choisie
 let imageForm = document.getElementById('upload-image');
 imageForm.addEventListener('change', function(event) {
-    let reader = new FileReader();
+    let newReader = new FileReader();
     let file = event.target.files[0];
-    reader.onload = function(event) {
-        let img = document.createElement("img", "image-form");
-        /// Définir la source de l'image sur le contenu du fichier
-        img.src = event.target.result;
-        /// récupération du container de la partie image du formulaire ///
-        let container = document.querySelector(".image-upload");
-        container.innerHTML = '';
-        container.appendChild(img);
+    newReader.onload = function(event) {
+        let imageUpload = document.createElement("img");
+        imageUpload.classList.add('image-load');
+        // Récup source image sur le pc
+        imageUpload.src = event.target.result;
+        let divImageForm = document.getElementById("change-image");
+        divImageForm.innerHTML = '';
+        divImageForm.appendChild(imageUpload);
     };
-    reader.readAsDataURL(file);
+    newReader.readAsDataURL(file);
 });
 
-// Au clic du bouton submit du formulaire, on exécute la fonction :
+// Fonction pour ajouter un projet :
 async function AddWorksFetch() {
 
-    const addTitle = document.getElementById('title-project');
-    const addPicture = document.getElementById('upload-image');
-    const addCategory = document.getElementById('categorie-projet');
+    // Récupération des valeurs renseignées dans le formulaire
+    const addPicture = document.getElementById('upload-image').files[0];
+    const addTitle = document.getElementById('title-project').value;
+    const addCategory = document.getElementById('categorie-projet').value;
 
-    // On récupère le formulaire qu'on stocke dans une variable
+    // Récupération du formulaire (+ ajout d'un EventListener)
     const formAddWorks = document.querySelector('.form-upload');
     formAddWorks.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        if (!addTitle.value || !addPicture.files[0] || !addCategory.value) {
-            alert("Remplir tous les champs avant d'envoyer le projet");
+        // FormData utile pour l'appel à fetch (POST)
+        let formData = new FormData(formAddWorks);
+        formData.append('image', addPicture);
+        formData.append('title', addTitle);
+        formData.append('category', addCategory);
+
+        // Appel fetch (si le formulaire rempli entièrement)
+        fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${getToken}` },
+            body: formData
+        });
+
+        // Condition pour que le formulaire s'envoie
+        if (!addPicture === null || !addTitle === null || !addCategory === null) {
+            // Message d'erreur :
+            const errorMessage = document.getElementById('error-adding-work');
+            const showErrorMessage = document.createElement("p");
+            showErrorMessage.classList.add = ('error-message-work');
+            showErrorMessage.innerText = "Remplir tous les champs avant d'envoyer le projet";
+            errorMessage.appendChild(showErrorMessage);
             return;
         }
 
-        // Création d'un FormData
-        let formData = new FormData(formAddWorks);
-        formData.append('image', addPicture.files[0]);
-        formData.append('title', addTitle.value);
-        formData.append('category', addCategory.value);
-
-        // Appel à fetch pour envoyer le projet, si tout le formulaire est rempli
-        fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${getToken}`,
-                'accept': 'application/json',
-            },
-            body: formData,
-        });
     })
 }
 
