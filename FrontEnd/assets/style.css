@@ -652,6 +652,6 @@ a:hover {
     border: 0px;
 }
 
-.error-message-work {
-    color: #B1663C;
+#error-adding-work {
+    display: none;
 }

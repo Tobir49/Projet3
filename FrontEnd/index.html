@@ -107,16 +107,16 @@
                             <div class="image-upload" id="change-image">
                                 <i class="fa-sharp fa-regular fa-image image-upload-icone"></i>
                                 <label for="upload-image" class="title-upload-image">+ Ajouter une photo</label>
-                                <input type="file" id="upload-image" name="upload-image" max-size="4000" accept=".jpg, .jpeg, .png" multiple required>
+                                <input type="file" id="upload-image" name="upload-image" max-size="4000" accept=".jpg, .jpeg, .png" multiple>
                                 <p class="sous-titre-upload">jpg, png : 4mo max</p>
                             </div>
 
                             <div class="form-category">
                                 <label class="upload-title-form">Titre</label>
-                                <input type="name" class="input" name="title-project" id="title-project" required>
+                                <input type="name" class="input" name="title-project" id="title-project">
 
                                 <label for="categorie-projet" class="upload-title-form">Catégorie</label>
-                                <select name="categories" class="input" id="categorie-projet" required>
+                                <select name="categories" class="input" id="categorie-projet">
                                     <option value=""></option>
                                     <option value="1">Objet</option>
                                     <option value="2">Appartement</option>
@@ -124,9 +124,11 @@
                                 </select>
                             </div>
 
-                            <input type="submit" value="Valider" class="style-input-modale upload-input-submit">
+                            <div id="error-adding-work">
+                                <p>Remplir tous les champs avant d'envoyer le projet</p>
+                            </div>
 
-                            <div id="error-adding-work"></div>
+                            <input type="submit" value="Valider" class="style-input-modale upload-input-submit">
                         </form>
                     </div>
                 </aside>

@@ -49,38 +49,43 @@ if (getToken !== null) {
 //\\\\\\\\\\\\\\\\\Modale d'ouverture/////////////////////\\
 
 // Fonction appelée pour faire apparaître les projets dans la modale
+
+function createWorksModal(work) {
+    const divProjects = document.querySelector(".galerie-photo");
+    const figureElement = document.createElement("figure");
+    figureElement.classList.add("figure-modale");
+    figureElement.setAttribute("id", "projets " + work.id);
+    const imageElement = document.createElement("img");
+    imageElement.src = work.imageUrl;
+    imageElement.setAttribute("crossorigin", 'anonymous');
+    const figcaptionElement = document.createElement("figcaption");
+    figcaptionElement.innerText = 'éditer';
+    // Bouton et icône
+    const deleteButton = document.createElement("button");
+    // On lui donne comme id, celui dans l'API
+    deleteButton.setAttribute("id", work.id);
+    // Au clic du bouton, on exécute la fonction (sur l'id qu'on pointe)
+    deleteButton.setAttribute("onclick", "deleteProject(this.id);");
+    deleteButton.classList.add("bouton-modale-delete");
+    const icone = document.createElement('span');
+    icone.innerHTML = '<i class="fa-solid fa-trash-can icone-modale-delete"></i>';
+    const moveIcone = document.createElement('span');
+    moveIcone.innerHTML = '<i class="fa-solid fa-arrows-up-down-left-right move-icone"></i>';
+
+    divProjects.appendChild(figureElement);
+    figureElement.appendChild(imageElement);
+    figureElement.appendChild(figcaptionElement);
+    figureElement.appendChild(deleteButton);
+    deleteButton.appendChild(icone);
+    figureElement.appendChild(moveIcone);
+}
+
 async function showProjectsModal() {
     const response = await fetch("http://localhost:5678/api/works");
     const json = await response.json();
 
     json.forEach(work => {
-        const divProjects = document.querySelector(".galerie-photo");
-        const figureElement = document.createElement("figure");
-        figureElement.classList.add("figure-modale");
-        figureElement.setAttribute("id", "projets " + work.id);
-        const imageElement = document.createElement("img");
-        imageElement.src = work.imageUrl;
-        imageElement.setAttribute("crossorigin", 'anonymous');
-        const figcaptionElement = document.createElement("figcaption");
-        figcaptionElement.innerText = 'éditer';
-        // Bouton et icône
-        const deleteButton = document.createElement("button");
-        // On lui donne comme id, celui dans l'API
-        deleteButton.setAttribute("id", work.id);
-        // Au clic du bouton, on exécute la fonction (sur l'id qu'on pointe)
-        deleteButton.setAttribute("onclick", "deleteProject(this.id);");
-        deleteButton.classList.add("bouton-modale-delete");
-        const icone = document.createElement('span');
-        icone.innerHTML = '<i class="fa-solid fa-trash-can icone-modale-delete"></i>';
-        const moveIcone = document.createElement('span');
-        moveIcone.innerHTML = '<i class="fa-solid fa-arrows-up-down-left-right move-icone"></i>';
-
-        divProjects.appendChild(figureElement);
-        figureElement.appendChild(imageElement);
-        figureElement.appendChild(figcaptionElement);
-        figureElement.appendChild(deleteButton);
-        deleteButton.appendChild(icone);
-        figureElement.appendChild(moveIcone);
+        createWorksModal(work);
     });
 };
 
@@ -203,6 +208,18 @@ async function AddWorksFetch() {
     const formAddWorks = document.querySelector('.form-upload');
     formAddWorks.addEventListener('submit', (event) => {
         event.preventDefault();
+        console.log(addPicture, addTitle, addCategory);
+
+        // Condition pour que le formulaire s'envoie
+        if (!addPicture.files[0] || !addTitle.value || !addCategory.value) {
+            // Message d'erreur :
+            const errorMessage = document.getElementById('error-adding-work');
+            errorMessage.style.display = 'flex';
+            return;
+        };
+
+        const errorMessage = document.getElementById('error-adding-work');
+        errorMessage.style.display = 'none';
 
         // FormData utile pour l'appel à fetch (POST)
         let formData = new FormData();
@@ -212,31 +229,22 @@ async function AddWorksFetch() {
 
         // Appel fetch (si le formulaire rempli entièrement)
         fetch('http://localhost:5678/api/works', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${getToken}` },
-                body: formData
-            })
-            // La réponse de l'API
-            .then(resultat => {
-                console.log(resultat);
-                return resultat.json();
-            })
-            // Réponse de ce qu'on envoie
-            .then(event => {
-                console.log(event);
-            })
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${getToken}` },
+            body: formData
+        })
 
-        // Condition pour que le formulaire s'envoie
-        if (addPicture === null || addTitle === null || addCategory === null) {
-            // Message d'erreur :
-            const errorMessage = document.getElementById('error-adding-work');
-            const showErrorMessage = document.createElement("p");
-            showErrorMessage.classList.add = ('error-message-work');
-            showErrorMessage.innerText = "Remplir tous les champs avant d'envoyer le projet";
-            errorMessage.appendChild(showErrorMessage);
-            return;
-        }
+        // La réponse de l'API
+        .then(resultat => {
+            return resultat.json();
+        })
+
+        // Réponse de ce qu'on envoie
+        .then(work => {
+            createWork(work);
+            createWorksModal(work);
+        })
     })
-}
+};
 
 AddWorksFetch();
