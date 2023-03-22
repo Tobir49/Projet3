@@ -420,7 +420,7 @@ a:hover {
 
 /* Modale de début */
 
-.modal {
+#aside-modals {
     width: 35%;
     height: 40em;
     position: fixed;
@@ -555,7 +555,7 @@ a:hover {
     overflow: auto;
 }
 
-.icones-retour-ajout {
+.icone-retour-ajout {
     align-self: flex-start;
     margin: 1.5em 1.5em 1.5em 1.5em;
 }

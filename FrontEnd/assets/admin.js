@@ -108,6 +108,7 @@ function showModal(aside, openButton, iconeClose, divModal) { // Les paramètres
 function closeModal() {
     const chooseModal = document.getElementById('aside-modals');
     chooseModal.style.display = 'none';
+    formEmpty(); // Fonction créée plus bas, pour vider le formulaire d'ajout si modale fermée
 }
 
 // Appel des fonctions pour la modale dans une fonction globale (une pour chaque modale)
@@ -147,6 +148,18 @@ async function deleteProject(clicked_id) {
 
 //\\\\\\\\\\\\\\\\\Modale d'ajout/////////////////////\\
 
+// Vider le formulaire s'il est rempli et qu'on quitte la modale
+function formEmpty() {
+    const addingWorksForm = document.querySelector('.form-upload');
+    addingWorksForm.reset();
+    // Message d'erreur' d'envoi de projet caché de base
+    const errorMessage = document.getElementById('error-message-work');
+    errorMessage.style.display = 'none';
+    // Message de validation d'envoi de projet caché de base
+    const validationMessage = document.getElementById('validation-message-work');
+    validationMessage.style.display = 'none';
+};
+
 // Fonction pour choisir la modale à afficher (changer son style)
 function changeModal(styleModal1, modalDirection, styleModal2) {
     document.querySelector('.modal-wrapper').style.display = styleModal1;
@@ -162,7 +175,7 @@ function methodSecondModal() {
         call.addEventListener('click', () => {
             // On lui applique ces méthodes au clic du bouton
             changeModal('none', '', 'flex'); // Le 2e paramètre est inutile car il concerne la 1e modale
-            showModal('aside-modals', 'open-second-modal', '.cross-upload', '.modale-upload')
+            showModal('aside-modals', 'open-second-modal', '.cross-upload', '.modale-upload');
         })
     })
 }
@@ -173,6 +186,7 @@ methodSecondModal();
 let returnFirstModale = document.querySelector('.arrow');
 returnFirstModale.addEventListener('click', () => {
     changeModal('flex', 'column', 'none');
+    formEmpty();
 });
 
 

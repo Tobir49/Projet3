@@ -17,7 +17,7 @@
 <body>
 
     <!--Mode edit : barre de modification-->
-    <aside class="barre-modification" id="admin_bar" style="display:none">
+    <aside class="barre-modification" style="display:none">
         <!--Display:none ici car dans le CSS il y a déjà display:flex-->
         <div class="mode-edition">
             <i class="fa-regular fa-pen-to-square titre-barre"></i>
@@ -76,9 +76,9 @@
                 </div>
 
                 <!--Modale d'ouverture-->
-                <aside id="aside-modals" class="modal" role="dialog" style="display:none">
+                <aside id="aside-modals" role="dialog" style="display:none">
 
-                    <div class="modal-wrapper fermer-modale">
+                    <div class="modal-wrapper">
                         <div class="x-close">
                             <a href="#"><i class="fa-solid fa-xmark icone"></i></a>
                         </div>
@@ -93,12 +93,12 @@
                     </div>
 
                     <!--Modale d'ajout-->
-                    <div id="modal2" class="modale-upload" style="display:none">
-                        <div class="icones-retour-ajout">
+                    <div class="modale-upload" style="display:none">
+                        <div class="icone-retour-ajout">
                             <a href="#"><i class="fa-solid fa-arrow-left arrow"></i></i></a>
                         </div>
                         <div class="icone-fermer-upload">
-                            <a href="#"><i class="fa-solid fa-xmark icone cross-upload"></i></a>
+                            <a href="#"><i class="fa-solid fa-xmark cross-upload"></i></a>
                         </div>
 
                         <form enctype="multipart/form-data" method="post" class="form-upload">
