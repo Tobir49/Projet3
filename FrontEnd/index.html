@@ -72,11 +72,11 @@
                 <!--Mode edit : 3e bouton modifier-->
                 <div class="modification-projets" style="display:none">
                     <i class="fa-regular fa-pen-to-square"></i>
-                    <a href="#modal1" class="open-modal1" id="open-modal-wrapper">modifier</a>
+                    <a href="#aside-modals" class="open-modal1" id="open-modal-wrapper">modifier</a>
                 </div>
 
                 <!--Modale d'ouverture-->
-                <aside id="modal1" class="modal" role="dialog" style="display:none">
+                <aside id="aside-modals" class="modal" role="dialog" style="display:none">
 
                     <div class="modal-wrapper fermer-modale">
                         <div class="x-close">
@@ -124,8 +124,9 @@
                                 </select>
                             </div>
 
-                            <div id="error-adding-work">
-                                <p>Remplir tous les champs avant d'envoyer le projet</p>
+                            <div>
+                                <p id="error-message-work">Veuillez remplir tous les champs avant d'envoyer le projet</p>
+                                <p id="validation-message-work">Projet ajouté avec succès !</p>
                             </div>
 
                             <input type="submit" value="Valider" class="style-input-modale upload-input-submit">

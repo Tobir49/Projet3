@@ -106,7 +106,7 @@ function showModal(aside, openButton, iconeClose, divModal) { // Les paramètres
 
 // Fonction pour fermer la modale
 function closeModal() {
-    const chooseModal = document.getElementById('modal1');
+    const chooseModal = document.getElementById('aside-modals');
     chooseModal.style.display = 'none';
 }
 
@@ -115,7 +115,7 @@ function methodFirstModal() {
     // On va cherher le lien pour ouvrir la 1e modale
     document.querySelectorAll('.open-modal1').forEach(call => {
         // On change les paramètres pour la méthode d'ouverture de modale
-        call.addEventListener('click', showModal('modal1', 'open-modal-wrapper', '.icone', '.modal-wrapper'))
+        call.addEventListener('click', showModal('aside-modals', 'open-modal-wrapper', '.icone', '.modal-wrapper'))
             // Affichage des projets
         showProjectsModal();
     });
@@ -162,7 +162,7 @@ function methodSecondModal() {
         call.addEventListener('click', () => {
             // On lui applique ces méthodes au clic du bouton
             changeModal('none', '', 'flex'); // Le 2e paramètre est inutile car il concerne la 1e modale
-            showModal('modal1', 'open-second-modal', '.cross-upload', '.modale-upload')
+            showModal('aside-modals', 'open-second-modal', '.cross-upload', '.modale-upload')
         })
     })
 }
@@ -217,13 +217,18 @@ async function AddWorksFetch() {
         // Condition pour que le formulaire s'envoie
         if (!addPicture.files[0] || !addTitle.value || !addCategory.value) {
             // Message d'erreur :
-            const errorMessage = document.getElementById('error-adding-work');
+            const errorMessage = document.getElementById('error-message-work');
             errorMessage.style.display = 'flex';
+            // Message de validation d'envoi de projet caché de base
+            const validationMessage = document.getElementById('validation-message-work');
+            validationMessage.style.display = 'none';
             return;
+            // Le code s'arrête là si les conditions ne sont pas remplies
         };
         // Permet de cacher le message s'il y a eu une erreur auparavant
-        const errorMessage = document.getElementById('error-adding-work');
+        const errorMessage = document.getElementById('error-message-work');
         errorMessage.style.display = 'none';
+
 
         // FormData utile pour l'appel à fetch (POST)
         let formData = new FormData();
@@ -249,7 +254,14 @@ async function AddWorksFetch() {
             createWork(work);
             // On appelle la méthode pour afficher les projets sur la modale
             createWorksModal(work);
-        })
+        });
+
+        // Condition exécutée si le projet a été ajouté avec succès
+        if (addPicture.files[0] || addTitle.value || addCategory.value) {
+            // Message de validation :
+            const validationMessage = document.getElementById('validation-message-work');
+            validationMessage.style.display = 'flex';
+        };
     })
 };
 

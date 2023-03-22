@@ -652,6 +652,14 @@ a:hover {
     border: 0px;
 }
 
-#error-adding-work {
+#error-message-work {
+    color: #B1663C;
     display: none;
+    margin-top: 1em;
+}
+
+#validation-message-work {
+    display: none;
+    color: #1D6154;
+    margin-top: 1em;
 }

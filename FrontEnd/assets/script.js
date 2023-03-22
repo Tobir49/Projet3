@@ -33,14 +33,14 @@ postWork();
 
 // Afficher les éléments filtrés
 function showProjects(element, name) {
-    let i, tableauUn, tableauDeux;
-    tableauUn = element.className.split(" ");
-    // console.log(tableauUn); On obtient un tableau avec les éléments filtrés qui contiennent la classe filterDiv et le categoryId
-    tableauDeux = name.split(" ");
-    // console.log(tableauDeux); On obtient un tableau avec les éléments filtrés qui contiennent la classe show
-    for (i = 0; i < tableauDeux.length; i++) {
-        if (tableauUn.indexOf(tableauDeux[i]) == -1) { // En dehors du tableau
-            element.className += " " + tableauDeux[i];
+    let i, addClassesFilteredElements, addClassShowFilteredElements;
+    addClassesFilteredElements = element.className.split(" ");
+    // console.log(addClassesFilteredElements); Tableau avec éléments filtrés contenant classes filterDiv et categoryId
+    addClassShowFilteredElements = name.split(" ");
+    // console.log(addClassShowFilteredElements); Tableau avec éléments filtrés contenant classe show
+    for (i = 0; i < addClassShowFilteredElements.length; i++) {
+        if (addClassesFilteredElements.indexOf(addClassShowFilteredElements[i]) == -1) { // En dehors du tableau
+            element.className += " " + addClassShowFilteredElements[i];
         }
     }
     // console.log(element); Un tableau avec les éléments filtrés (qui ont toutes les classes)
@@ -48,15 +48,15 @@ function showProjects(element, name) {
 
 // Cacher les éléments non filtrés
 function hideProjects(element, name) {
-    let i, tableauUn, tableauDeux;
-    tableauUn = element.className.split(" ");
-    tableauDeux = name.split(" ");
-    for (i = 0; i < tableauDeux.length; i++) {
-        while (tableauUn.indexOf(tableauDeux[i]) > -1) { // Dans le tableau
-            tableauUn.splice(tableauUn.indexOf(tableauDeux[i]), 1);
+    let i, addClassesFilteredElements, addClassShowFilteredElements;
+    addClassesFilteredElements = element.className.split(" ");
+    addClassShowFilteredElements = name.split(" ");
+    for (i = 0; i < addClassShowFilteredElements.length; i++) {
+        while (addClassesFilteredElements.indexOf(addClassShowFilteredElements[i]) > -1) { // Dans le tableau
+            addClassesFilteredElements.splice(addClassesFilteredElements.indexOf(addClassShowFilteredElements[i]), 1);
         }
     }
-    element.className = tableauUn.join(" ");
+    element.className = addClassesFilteredElements.join(" ");
     // console.log(element); Un tableau avec tous les éléments mais ceux qui sont filtrés ont une classe en plus : "show"
 };
 
