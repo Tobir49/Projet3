@@ -30,10 +30,12 @@
         <h2>Login</h2>
         <form class="formulaire-connexion" methode="post">
             <label>E-mail</label>
-            <input type="email" name="email" id="email" required>
+            <input type="email" name="email" id="email">
             <label>Mot de passe</label>
-            <input type="password" name="password" id="password" required>
-            <div class="erreur"></div>
+            <input type="password" name="password" id="password">
+            <div class="erreur">
+                <p>Erreur dans l’identifiant ou le mot de passe</p>
+            </div>
             <input type="submit" value="Se connecter" id="login">
         </form>
         <a href="#" id="mdp-oublie">Mot de passe oublié</a>

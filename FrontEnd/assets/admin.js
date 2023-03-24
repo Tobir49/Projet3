@@ -8,7 +8,7 @@ function logout(e) {
     // Vider le sessionStorage
     sessionStorage.clear();
     // Retourner à la page d'accueil
-    window.location.href = "index.html";
+    window.location.href = "./index.html";
 };
 
 
@@ -63,7 +63,6 @@ function createWorksModal(work) {
     icone.innerHTML = '<i class="fa-solid fa-trash-can icone-modale-delete"></i>';
     const moveIcone = document.createElement('span');
     moveIcone.innerHTML = '<i class="fa-solid fa-arrows-up-down-left-right move-icone"></i>';
-
     divProjects.appendChild(figureElement);
     figureElement.appendChild(imageElement);
     figureElement.appendChild(figcaptionElement);
@@ -88,7 +87,7 @@ function stopPropagation(event) {
     event.stopPropagation()
 };
 
-// Fonction pour ouvrir la modale
+// Fonction pour afficher la modale
 function showModal(aside, openButton, iconeClose, divModal) { // Les paramètres sont utiles pour choisir quelle modale on souhaite ouvrir
     const chooseModal = document.getElementById(aside);
     const chooseButton = document.getElementById(openButton);
@@ -104,7 +103,7 @@ function showModal(aside, openButton, iconeClose, divModal) { // Les paramètres
     }
 }
 
-// Fonction pour fermer la modale
+// Fonction pour cacher la modale
 function closeModal() {
     const chooseModal = document.getElementById('aside-modals');
     chooseModal.style.display = 'none';
@@ -121,7 +120,6 @@ function methodFirstModal() {
         showProjectsModal();
     });
 }
-
 methodFirstModal();
 
 
@@ -148,18 +146,6 @@ async function deleteProject(clicked_id) {
 
 //\\\\\\\\\\\\\\\\\Modale d'ajout/////////////////////\\
 
-// Vider le formulaire s'il est rempli et qu'on quitte la modale
-function formEmpty() {
-    const addingWorksForm = document.querySelector('.form-upload');
-    addingWorksForm.reset();
-    // Message d'erreur' d'envoi de projet caché de base
-    const errorMessage = document.getElementById('error-message-work');
-    errorMessage.style.display = 'none';
-    // Message de validation d'envoi de projet caché de base
-    const validationMessage = document.getElementById('validation-message-work');
-    validationMessage.style.display = 'none';
-};
-
 // Fonction pour choisir la modale à afficher (changer son style)
 function changeModal(styleModal1, modalDirection, styleModal2) {
     document.querySelector('.modal-wrapper').style.display = styleModal1;
@@ -179,18 +165,33 @@ function methodSecondModal() {
         })
     })
 }
-
 methodSecondModal();
 
 // Sert à utiliser la flèche de la 2e modale afin de revenir en arrière
-let returnFirstModale = document.querySelector('.arrow');
-returnFirstModale.addEventListener('click', () => {
-    changeModal('flex', 'column', 'none');
-    formEmpty();
-});
+function returnFirstModale() {
+    let arrowReturn = document.querySelector('.arrow');
+    arrowReturn.addEventListener('click', () => {
+        changeModal('flex', 'column', 'none');
+        formEmpty();
+    });
+
+}
+returnFirstModale();
 
 
 //\\\\\\\\\\\\\\\\\Ajouter un projet/////////////////////\\
+
+// Vider le formulaire s'il est rempli et qu'on quitte la modale
+function formEmpty() {
+    const addingWorksForm = document.querySelector('.form-upload');
+    addingWorksForm.reset();
+    // Message d'erreur' d'envoi de projet caché de base
+    const errorMessage = document.getElementById('error-message-work');
+    errorMessage.style.display = 'none';
+    // Message de validation d'envoi de projet caché de base
+    const validationMessage = document.getElementById('validation-message-work');
+    validationMessage.style.display = 'none';
+};
 
 // Afficher l'image choisie
 // 1. On récupère l'input pour ajouter une image
@@ -215,9 +216,9 @@ imageForm.addEventListener('change', function(event) {
     newReader.readAsDataURL(file);
 });
 
+
 // Fonction pour ajouter un projet :
 async function AddWorksFetch() {
-
     // Récupération des valeurs renseignées dans le formulaire
     const addPicture = document.getElementById('upload-image');
     const addTitle = document.getElementById('title-project');
@@ -242,7 +243,6 @@ async function AddWorksFetch() {
         // Permet de cacher le message s'il y a eu une erreur auparavant
         const errorMessage = document.getElementById('error-message-work');
         errorMessage.style.display = 'none';
-
 
         // FormData utile pour l'appel à fetch (POST)
         let formData = new FormData();
@@ -278,5 +278,4 @@ async function AddWorksFetch() {
         };
     })
 };
-
 AddWorksFetch();

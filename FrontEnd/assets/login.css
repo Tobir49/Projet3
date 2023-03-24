@@ -285,4 +285,5 @@ a:hover {
 
 .erreur {
     color: #B1663C;
+    display: none;
 }
