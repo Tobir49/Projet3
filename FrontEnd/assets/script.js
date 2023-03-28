@@ -44,6 +44,8 @@ function showProjects(element, name) {
         }
     }
     // console.log(element); Un tableau avec les éléments filtrés (qui ont toutes les classes)
+    // console.log(name); Chiffre (nb à afficher de projets) et show
+
 };
 
 // Cacher les éléments non filtrés
@@ -58,6 +60,7 @@ function hideProjects(element, name) {
     }
     element.className = addClassesFilteredElements.join(" ");
     // console.log(element); Un tableau avec tous les éléments mais ceux qui sont filtrés ont une classe en plus : "show"
+    // console.log(name); Chiffre (nb projets) et show
 };
 
 // Fonction pour afficher tous les travaux selon leur catégorie
