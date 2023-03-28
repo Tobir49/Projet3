@@ -4,11 +4,11 @@
 const getToken = window.sessionStorage.getItem("token");
 
 // 1.2. Pouvoir se déconnecter :
-function logout(e) {
+function logout() {
     // Vider le sessionStorage
     sessionStorage.clear();
     // Retourner à la page d'accueil
-    window.location.href = "./index.html";
+    location.reload();
 };
 
 
@@ -16,8 +16,9 @@ function logout(e) {
 if (getToken !== null) {
     // 2.1 Remplacer le "login" par "logout"
     let loginNavName = document.querySelector(".connexion-admin");
-    loginNavName.innerHTML = " "
     loginNavName.innerText = "logout";
+    loginNavName.removeAttribute('href');
+    loginNavName.style.cursor = "pointer";
     // 2.2. Pouvoir retourner sur la page d'accueil
     loginNavName.addEventListener('click', logout);
     // 2.3. Afficher les éléments de la page admin pour edit :
@@ -191,31 +192,45 @@ function formEmpty() {
     // Message de validation d'envoi de projet caché de base
     const validationMessage = document.getElementById('validation-message-work');
     validationMessage.style.display = 'none';
+    deletePicture();
 };
 
 // Afficher l'image choisie
 // 1. On récupère l'input pour ajouter une image
-let imageForm = document.getElementById('upload-image');
+let imageForm = document.getElementById('change-image');
 // 2. On lui applique un listener pour changer son style
 imageForm.addEventListener('change', function(event) {
     let newReader = new FileReader(); // Permet de lire le fichier choisi
     // 3. On vise le 1er document (et unique ici)
-    let file = event.target.files[0];
-    newReader.onload = function(event) {
+    let file = event.target.files;
+    const fileLength = file.length;
+    if (fileLength > 0) {
         let imageUpload = document.createElement("img");
         imageUpload.classList.add('image-load');
         // 4. Récupérer la source image sur le pc
-        imageUpload.src = event.target.result;
+        const imageSource = URL.createObjectURL(file[0]);
+        imageUpload.src = imageSource;
         let divImageForm = document.getElementById("change-image");
         // 5. Vider la div de l'input
         divImageForm.innerHTML = '';
         // 6. Lier l'image à la div pour remplacer son ancien contenu
         divImageForm.appendChild(imageUpload);
+        // 7. Cette méthode sert à lire le contenu du fichier choisi (file)
+        newReader.readAsDataURL(file[0]);
+        console.log(file);
+        return;
     };
-    // 7. Cette méthode sert à lire le contenu du fichier choisi (file)
-    newReader.readAsDataURL(file);
 });
 
+// Enlever l'image quand on quitte le formulaire
+function deletePicture() {
+    let deletePictureDiv = document.getElementById("change-image");
+    deletePictureDiv.innerHTML = `<i class="fa-sharp fa-regular fa-image image-upload-icone"></i>
+            <label for="upload-image" class="title-upload-image">+ Ajouter une photo</label>
+            <input type="file" id="upload-image" name="upload-image" max-size="4000" accept=".jpg, .jpeg, .png" multiple>
+            <p class="sous-titre-upload">jpg, png : 4mo max</p>`;
+
+}
 
 // Fonction pour ajouter un projet :
 async function AddWorksFetch() {

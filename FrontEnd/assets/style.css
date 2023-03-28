@@ -582,9 +582,8 @@ a:hover {
 }
 
 .image-load {
-    width: 60%;
     align-items: center;
-    height: 10.5em;
+    height: 100%;
 }
 
 .image-upload {
